@@ -1,0 +1,83 @@
+﻿@using Monitor.Models;
+@model Webdiyer.WebControls.Mvc.PagedList<ClusterHttpWatch>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = " 请求耗时列表";
+}
+<h1>
+    请求耗时列表
+</h1>
+<ul class="breadcrumb">
+    <li>
+        <a href="help.htm">监控中心</a> <span class="divider">/</span>
+    </li>
+    <li class="active">
+       请求耗时列表
+    </li>
+</ul>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                请求IP
+            </th>
+            <th>
+                耗时/毫秒
+            </th>
+            <th>
+                请求时间
+            </th>
+            <th>
+                请求地址
+            </th>
+            <th>
+                View
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Ip
+                </td>
+                <td>
+                    @item.Timevalue
+                </td>
+                <td>
+                    @item.CreateDate
+                </td>
+                <td>
+                    @item.Referer
+                </td>
+                <td>
+                    <a href="#" class="view-link">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="pagination">
+    <ul>
+        <li class="disabled">
+            <a href="#">&laquo;</a>
+        </li>
+        <li class="active">
+            <a href="#">1</a>
+        </li>
+        <li>
+            <a href="#">2</a>
+        </li>
+        <li>
+            <a href="#">3</a>
+        </li>
+        <li>
+            <a href="#">4</a>
+        </li>
+        <li>
+            <a href="#">&raquo;</a>
+        </li>
+    </ul>
+</div>
+

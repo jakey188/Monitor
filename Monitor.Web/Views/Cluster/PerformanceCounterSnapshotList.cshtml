@@ -1,0 +1,161 @@
+﻿@using Monitor.Models;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = " 性能监视器";
+}
+@section script{
+<script>
+    $(function () {
+        var vue = new Vue({
+            el: '#app',
+            data: {
+                pageOptions: {
+                    currentPage: 1,
+                    totalPages: 1,
+                    alignment: "right",
+                    onPageClicked: function (e, originalEvent, type, page) {
+                        vue.pageOptions.currentPage = page;
+                        vue.getList();
+                    }
+                },
+                machineIpText:{ id: '',name:'服务器IP'},
+                collectTypeText:{ id:'',name: '监控类型'},
+                apiGetListUrl: '@Url.Content("~/")api/GetPerformanceCounterSnapshotList',
+                dataList: []
+            },
+            ready: function () {
+                this.getList();
+            },
+            methods: {
+                dropdownMachineChange: function (ip) {
+                    this.machineIpText.id = ip;
+                    this.machineIpText.name = ip;
+                    this.pageOptions.currentPage = 1;
+                    this.getList();
+                },
+                dropdownCollectTypeChange: function (type, collectName) {
+                    this.collectTypeText.id = type;
+                    this.collectTypeText.name = collectName;
+                    this.pageOptions.currentPage = 1;
+                    this.getList();
+                },
+                getList: function () {
+                    var vm = this;
+                    $.ajax({
+                        url: vm.apiGetListUrl,
+                        type: 'get',
+                        dataType: 'json',
+                        data: { pageIndex: vm.pageOptions.currentPage, ip: vm.machineIpText.id, type: vm.collectTypeText.id },
+                        success: function (response) {
+                            if (response.s === 10006) {
+                                vm.dataList = response.data;
+                                vm.pageOptions.totalPages = getTotalPage(response.count, response.pgSize);
+                                $('.pagination').bootstrapPaginator(vm.pageOptions);
+                            }
+                        }
+                    })
+                }
+            }
+        });
+    });
+</script>
+}
+@section scriptSrc{
+    <script src="~/Statics/js/bootstrap-paginator.js"></script>    
+}
+<h1>
+    性能监视器
+</h1>
+<ul class="breadcrumb">
+    <li>
+        <a href="help.htm">监控中心</a> <span class="divider">/</span>
+    </li>
+    <li class="active">
+        性能监视器
+    </li>
+</ul>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <form class="form-search">
+                <div class="btn-group">
+                    <button class="btn" contenteditable="true">{{machineIpText.name}}</button>
+                    <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
+                    <ul class="dropdown-menu" contenteditable="true">
+                        @{ 
+                            var computerList =  ViewBag.ComputerInfoList as List<ClusterComputerInfo>;
+                        }
+                        @foreach (var item in computerList)
+                        {
+                            <li><a v-on:click="dropdownMachineChange('@item.MachineIp')">@item.MachineIp</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button class="btn" contenteditable="true">{{collectTypeText.name}}</button>
+                    <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
+                    <ul class="dropdown-menu" contenteditable="true">
+                        <li><a  v-on:click="dropdownCollectTypeChange(1,'CPU')">CPU</a></li>
+                        <li><a  v-on:click="dropdownCollectTypeChange(2,'内存')">内存</a></li>
+                        <li><a  v-on:click="dropdownCollectTypeChange(5,'IIS请求数')">IIS请求数</a></li>
+                    </ul>
+                </div>
+                <input class="input-medium search-query" type="text" /> <button type="submit" class="btn">查找</button>
+            </form>
+        </div>
+    </div>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                监控器名称
+            </th>
+            <th>
+                性能监视器类别
+            </th>
+            <th>
+                性能监视器名称
+            </th>
+            <th>
+                服务器名称
+            </th>
+            <th>
+                服务器IP
+            </th>
+            <th>
+                性能值
+            </th>
+            <th>
+                上报时间
+            </th>
+        </tr>
+    </thead>
+    <tbody v-for="item in dataList">
+            <tr>
+                <td>
+                    {{item.counter.collectName}}
+                </td>
+                <td>
+                    {{item.counter.categoryName}}
+                </td>
+                <td>
+                    {{item.counter.counterName}}
+                </td>
+                <td>
+                    {{item.machineName}}
+                </td>
+                <td>
+                    {{item.machineIP}}
+                </td>
+                <td>
+                    {{item.serviceCounterValue}}
+                </td>
+                <td>
+                    {{item.createTime}}
+                </td>
+            </tr>
+    </tbody>
+</table>
+<div class="pagination pagination-right"></div>
+

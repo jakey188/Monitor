@@ -1,0 +1,39 @@
+﻿{
+  "config": [
+    {
+      "Id": 1,
+      "CollectName": "CPU",
+      "CategoryName": "Processor",
+      "CounterName": "% Processor Time",
+      "InstanceName": "_Total"
+    },
+    {
+      "Id": 2,
+      "CollectName": "内存",
+      "CategoryName": "Memory",
+      "CounterName": "Available MBytes",
+      "InstanceName": ""
+    },
+    {
+      "Id": 3,
+      "CollectName": "物理磁盘读字节/s",
+      "CategoryName": "PhysicalDisk",
+      "CounterName": "Disk Read Bytes/sec",
+      "InstanceName": "_Total"
+    },
+    {
+      "Id": 4,
+      "CollectName": "物理磁盘写字节/s",
+      "CategoryName": "PhysicalDisk",
+      "CounterName": "Disk Write Bytes/sec",
+      "InstanceName": "_Total"
+    },
+    {
+      "Id": 5,
+      "CollectName": "IIS请求",
+      "CategoryName": "Web Service",
+      "CounterName": "Current Connections",
+      "InstanceName": "_Total"
+    }
+  ]
+}

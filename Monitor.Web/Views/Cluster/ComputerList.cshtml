@@ -1,0 +1,93 @@
+﻿@using Monitor.Models;
+@model Webdiyer.WebControls.Mvc.PagedList<ClusterComputerInfo>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = " 服务器列表";
+}
+@*<h1>
+    服务器信息
+</h1>*@
+<ul class="breadcrumb">
+    <li>
+        <a href="help.htm">监控中心</a> <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="#">服务器</a> <span class="divider">/</span>
+    </li>
+    <li class="active">
+         列表信息
+    </li>
+</ul>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                服务器名称
+            </th>
+            <th>
+                服务器IP
+            </th>
+            <th>
+                CPU名称
+            </th>
+            <th>
+                CPU个数
+            </th>
+            <th>
+                内存大小
+            </th>
+            <th>
+                系统名称
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @item.MachineName
+            </td>
+            <td>
+                @item.MachineIp
+            </td>
+            <td>
+                @item.CPUName
+            </td>
+            <td>
+                @item.CPUCount
+            </td>
+            <td>
+                @item.TotalVisibleMemorySize
+            </td>
+            <td>
+                @item.OSName
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<div class="pagination">
+    <ul>
+        <li class="disabled">
+            <a href="#">&laquo;</a>
+        </li>
+        <li class="active">
+            <a href="#">1</a>
+        </li>
+        <li>
+            <a href="#">2</a>
+        </li>
+        <li>
+            <a href="#">3</a>
+        </li>
+        <li>
+            <a href="#">4</a>
+        </li>
+        <li>
+            <a href="#">&raquo;</a>
+        </li>
+    </ul>
+</div>
+
