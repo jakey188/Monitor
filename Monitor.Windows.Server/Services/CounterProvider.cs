@@ -12,7 +12,7 @@ namespace Monitor.Windows.Server
 {
     public class CounterProvider
     {
-        public static List<Counter> Load()
+        public static List<CounterDto> Load()
         {
             var filePath = AppDomain.CurrentDomain.BaseDirectory + "counter.json";
 
@@ -21,7 +21,7 @@ namespace Monitor.Windows.Server
                 JsonSerializer serializer = new JsonSerializer();
                 JsonReader reader = new JsonTextReader(sr);
                 var jObject = (JObject)serializer.Deserialize(reader);
-                var configList = JsonConvert.DeserializeObject<List<Counter>>(jObject["config"].ToString());
+                var configList = JsonConvert.DeserializeObject<List<CounterDto>>(jObject["config"].ToString());
                 return configList;
             }
         }

@@ -20,10 +20,6 @@ namespace Monitor.Models
         /// </summary>
         public ObjectId Id { get; set; }
         /// <summary>
-        /// 监视器对象
-        /// </summary>
-        public Counter Counter { get; set; }
-        /// <summary>
         /// 服务器IP
         /// </summary>
         public String MachineIP { get; set; }
@@ -39,22 +35,27 @@ namespace Monitor.Models
         /// <summary>
         /// CPU使用率
         /// </summary>
+        [BsonRepresentation(BsonType.Double,AllowTruncation = true)]
         public float? CPU { get; set; }
         /// <summary>
         /// IIS请求数
         /// </summary>
+        [BsonRepresentation(BsonType.Double,AllowTruncation = true)]
         public float? IIS { get; set; }
         /// <summary>
         /// 使用内存
         /// </summary>
+        [BsonRepresentation(BsonType.Double,AllowTruncation = true)]
         public float? Memory { get; set; }
         /// <summary>
         /// 物理磁盘读字节/s
         /// </summary>
+        [BsonRepresentation(BsonType.Double,AllowTruncation = true)]
         public float? PhysicalDiskRead { get; set; }
         /// <summary>
         /// 物理磁盘写字节/s
         /// </summary>
+        [BsonRepresentation(BsonType.Double,AllowTruncation = true)]
         public float? PhysicalDiskWrite { get; set; }
     }
 }

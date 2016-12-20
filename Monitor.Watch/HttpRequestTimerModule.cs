@@ -54,7 +54,7 @@ namespace Monitor.Watch
                 var watch = new ClusterHttpWatch();
                 watch.CreateDate = DateTime.Now;
                 watch.Ip = GetIP();
-                watch.Referer = context.Request.Url.ToString();
+                watch.Referer = context.Request.Url.ToString().ToLower();
                 watch.Timevalue = time;
                 HttpRequestWatch.WatchQueue.Enqueue(watch);
             }

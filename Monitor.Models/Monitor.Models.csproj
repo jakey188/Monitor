@@ -64,11 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClusterComputerInfo.cs" />
-    <Compile Include="Counter.cs" />
-    <Compile Include="ClusterHttpWatch.cs" />
+    <Compile Include="Entites\ClusterComputerInfo.cs" />
+    <Compile Include="Dtos\CounterDto.cs" />
+    <Compile Include="Entites\ClusterHttpWatch.cs" />
+    <Compile Include="Entites\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ClusterPerformanceCounterSnapshot.cs" />
+    <Compile Include="Entites\ClusterPerformanceCounterSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -9,7 +9,7 @@ namespace Monitor.Models
     /// <summary>
     /// 监视器对象
     /// </summary>
-    public class Counter
+    public class CounterDto
     {
         public int Id { get; set; }
         /// <summary>

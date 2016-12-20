@@ -118,11 +118,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Statics\img\waiting.gif" />
+    <Content Include="Statics\js\app.js" />
     <Content Include="Statics\js\bootstrap-paginator.js" />
     <Content Include="Statics\js\bootstrap.js" />
     <Content Include="Statics\js\bootstrap.min.js" />
+    <Content Include="Statics\js\bootstrap-modal.js" />
     <Content Include="Statics\js\jquery.min.js" />
-    <Content Include="Statics\js\site.js" />
+    <Content Include="Statics\js\jquery.validate.bootstrap.js" />
+    <Content Include="Statics\js\jquery.validate.min.js" />
     <Content Include="Statics\js\vue.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -132,6 +136,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Core\Extensions\ContollerExtensions.cs" />
     <Compile Include="Core\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Core\Extensions\JsonExtension.cs" />
@@ -155,6 +160,9 @@
     <Content Include="Views\Cluster\HttpWatchList.cshtml" />
     <Content Include="Views\Cluster\PerformanceCounterSnapshotList.cshtml" />
     <Content Include="Views\Cluster\Charts.cshtml" />
+    <Content Include="Views\Cluster\HttpWatchReportList.cshtml" />
+    <Content Include="Views\User\List.cshtml" />
+    <Content Include="Views\User\_UserInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -166,7 +174,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Statics\css\" />
-    <Folder Include="Statics\img\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Monitor.Core\Monitor.Core.csproj">

@@ -177,9 +177,6 @@
         });
 </script>
 }
-<h1>
-    性能监视器
-</h1>
 <ul class="breadcrumb">
     <li>
         <a href="help.htm">监控中心</a> <span class="divider">/</span>
@@ -192,6 +189,7 @@
     <div class="row">
         <div class="span12">
             <form class="form-search">
+                <label>请先选择服务器IP：</label>
                 <div class="btn-group">
                     <button class="btn" contenteditable="true">{{machineIpText.name}}</button>
                     <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
@@ -205,24 +203,32 @@
                         }
                     </ul>
                 </div>
-                <div class="btn-group">
-                    <button class="btn" contenteditable="true">{{collectTypeText.name}}</button>
-                    <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
-                    <ul class="dropdown-menu" contenteditable="true">
-                        <li><a v-on:click="dropdownCollectTypeChange(1,'CPU')">CPU</a></li>
-                        <li><a v-on:click="dropdownCollectTypeChange(2,'内存')">内存</a></li>
-                        <li><a v-on:click="dropdownCollectTypeChange(5,'IIS请求数')">IIS请求数</a></li>
-                    </ul>
-                </div>
-                <input class="input-medium search-query" type="text" /> <button type="submit" class="btn">查找</button>
+                
             </form>
         </div>
     </div>
 </div>
-<div class="container">
+@*<div class="container">
     <div class="row">
-        <div id="cpuContainer" style="width:90%;height:300px"></div>
-        <div id="iisContainer" style="width:90%;height:300px"></div>
-        <div id="memoryContainer" style="width:90%;height:300px"></div>
+        <div id="cpuContainer" class="span11" style="height:400px;"></div>
+        <div id="iisContainer" class="span11" style="height:400px;"></div>
+        <div id="memoryContainer"class="span11" style="height:400px;"></div>
+    </div>
+</div>*@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div id="cpuContainer" style="height:400px;"></div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div id="iisContainer" style="height:400px;"></div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div id="memoryContainer" style="height:400px;"></div>
+        </div>
     </div>
 </div>

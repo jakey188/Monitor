@@ -1,0 +1,82 @@
+﻿<div id="addUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">用户信息</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="createUserInfoForm" action="javascript:void(0)">
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label" for="input01">用户名</label>
+                <div class="controls">
+                    <input type="text" name="userName" required id="userName" placeholder="请输入用户名" class="input-xlarge">
+                    <p class="help-block"></p>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label" for="input01">真实姓名</label>
+                <div class="controls">
+                    <input type="text" required placeholder="请输入真实姓名" class="input-xlarge">
+                    <p class="help-block"></p>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label" for="input01">密码</label>
+                <div class="controls">
+                    <input type="text" required placeholder="请输入密码" class="input-xlarge">
+                    <p class="help-block"></p>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <!-- Select Basic -->
+                <label class="control-label">角色</label>
+                <div class="controls">
+                    <select class="input-xlarge">
+                        <option>管理员</option>
+                        <option>开发人员</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label" for="input01">手机号码</label>
+                <div class="controls">
+                    <input type="number" required placeholder="请输入手机号码" class="input-xlarge">
+                    <p class="help-block"></p>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label" for="input01">邮箱</label>
+                <div class="controls">
+                    <input type="email" required  placeholder="请输入邮箱" class="input-xlarge">
+                    <p class="help-block"></p>
+                </div>
+            </div>
+            <div class="control-group">
+
+               
+                <div class="controls">
+                    <input type="submit" class="btn btn-primary" v-on:click="createUser()" value="提交">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true" value="取消">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -19,6 +19,7 @@ namespace Monitor.Models
         /// <summary>
         /// 耗时/毫秒
         /// </summary>
+        [BsonRepresentation(BsonType.Double,AllowTruncation = true)]
         public float Timevalue { get; set; }
         /// <summary>
         /// 来源地址

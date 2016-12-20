@@ -63,7 +63,9 @@
     <Compile Include="ClusterComputerInfoServices.cs" />
     <Compile Include="ClusterHttpWatchService.cs" />
     <Compile Include="ClusterPerformanceCounterSnapshotService.cs" />
+    <Compile Include="Dtos\ClusterHttpWatchTotalDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserSerivice.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

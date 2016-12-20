@@ -17,7 +17,7 @@ namespace Monitor.Windows.Server
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private IList<Tuple<int,string, PerformanceCounter>> serviceCounters;
-        private IList<Counter> serviceCounterList;
+        private IList<CounterDto> serviceCounterList;
 
         public void Monitor(object state)
         {
@@ -50,11 +50,11 @@ namespace Monitor.Windows.Server
                         snapshot.MachineIP = os.MachineIp;
                         for (int i = 0;i < serviceCounters.Count;i++)
                         {
-                            snapshot.Counter = serviceCounterList.First(x => x.Id == serviceCounters[i].Item1);
+                            var counter = serviceCounterList.First(x => x.Id == serviceCounters[i].Item1);
                             try
                             {
                                 var value = serviceCounters[i].Item3.NextValue();
-                                switch (snapshot.Counter.Id)
+                                switch (counter.Id)
                                 {
                                     case (int)EnmCounter.CPU:
                                         snapshot.CPU = value;
