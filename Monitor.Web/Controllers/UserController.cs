@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using Monitor.Models.Entites;
@@ -21,16 +22,19 @@ namespace Monitor.Web.Controllers
             return View();
         }
 
-        public ActionResult UserInfo()
+        public ActionResult UserInfo(string id)
         {
-            return PartialView("_UserInfo");
+            var user = new User();
+            if (!string.IsNullOrEmpty(id))
+                user = _userSerivice.Get(id);
+            return PartialView("_UserInfo",user);
         }
 
         [Route("~/api/GetUserList")]
-        public JsonResult GetUserList(int pageIndex = 1,int pageSize = 10)
+        public JsonResult GetUserList(string userName,int pageIndex = 1,int pageSize = 10)
         {
             int total;
-            var data = _userSerivice.GetUserList(pageIndex,pageSize,out total);
+            var data = _userSerivice.GetUserList(userName,pageIndex,pageSize,out total);
             return Success(data,pageIndex,pageSize,total);
         }
 
@@ -45,6 +49,40 @@ namespace Monitor.Web.Controllers
         public JsonResult Update(User user)
         {
             _userSerivice.Update(user);
+            return Success();
+        }
+
+        [Route("~/api/user/add"), HttpPost]
+        public JsonResult Add(string id,string userName,string trueName,string role,string mobile,string email,string password)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var u = _userSerivice.Get(id);
+                if (u != null)
+                {
+                    u.TrueName = trueName;
+                    u.Role = Convert.ToInt32(role);
+                    u.Mobile = mobile;
+                    u.Email = email;
+                }
+                _userSerivice.Update(u);
+            }
+            else
+            {
+                if (_userSerivice.IsExitUser(userName))
+                    return Fail("用户已存在");
+
+                var user = new User
+                {
+                    TrueName = trueName,
+                    Role = Convert.ToInt32(role),
+                    Mobile = mobile,
+                    Email = email,
+                    UserName = userName,
+                    Password = password
+                };
+                _userSerivice.Add(user);
+            }
             return Success();
         }
     }

@@ -142,7 +142,7 @@ namespace Monitor.Web.Controllers
         /// <param name="pageSize">每页大小</param>
         /// <returns>返回列表数据</returns>
         [Route("api/GetPerformanceCounterSnapshotCharts")]
-        public JsonResult GetPerformanceCounterSnapshotList(string ip,string type)
+        public JsonResult GetPerformanceCounterSnapshotList(string ip)
         {
             var computerInfos = _clusterPerformanceCounterSnapshotService.ClusterPerformanceCounterSnapshot(ip,null,null,20);
             var data = computerInfos

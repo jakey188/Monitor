@@ -18,40 +18,44 @@ function loading(value) {
     }
 }
 
-var dialog = {
-    alert: function (content) {
-        modal.show({
+var app = {
+    alert: function (content,callback) {
+        BootstrapDialog.alert({
             title: '提示',
-            content: content,
-            buttons: [{
-                text: '确认',
-                class: 'btn btn-primary',
-                click: function () {
-                    $('#appModal').modal('hide');
-                }
-            }]
+            closable: true, // <-- Default value is false
+            draggable: true, // <-- Default value is false
+            message: content,
+            size: BootstrapDialog.SIZE_SMALL,
+            type: BootstrapDialog.TYPE_INFO,
+            callback: callback
+        })
+    },
+    confirm: function (content, callback) {
+        BootstrapDialog.confirm({
+            title: '提示',
+            message: content,
+            btnOKLabel: '确认',
+            btnCancelLabel:'取消',
+            type: BootstrapDialog.TYPE_WARNING,
+            callback: callback
         });
     },
-    confirm: function (content, callback, failCallback) {
-        modal.show({
+    tips: function (content, callback) {
+        var dialog = new BootstrapDialog({
             title: '提示',
-            content: content,
-            buttons: [{
-                text: '确认',
-                class: 'btn btn-primary',
-                click: function () {
-                    callback && callback();
-                    $('#appModal').modal('hide');
-                }
-            }, {
-                text: '取消',
-                class: 'btn btn-danger',
-                click: function () {
-                    failCallback && failCallback();
-                    $('#appModal').modal('hide');
-                }
-            }]
+            size: BootstrapDialog.SIZE_SMALL,
+            message: content
         });
+        dialog.open();
+        setTimeout(function () {
+            dialog.close();
+            callback();
+        }, 2000);
+    },
+    dialog: function (options) {
+        var dialog = new BootstrapDialog(options);
+        dialog.open();
+        return dialog;
     }
 }
 

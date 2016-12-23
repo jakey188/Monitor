@@ -1,36 +1,35 @@
-﻿$.validator.applyBootstrap = function () {
-  $.validator.setDefaults({
+﻿$.validator.setDefaults({
     highlight: function (element) {
-      $(element).addClass('has-error');
-      $(element).removeClass('valid');
-      $(element).closest('.input-group').addClass('has-error');
-      $(element).closest('.input-group').removeClass('valid');
+        $(element).closest('.form-group').addClass('has-error');
     },
     unhighlight: function (element) {
-      $(element).closest("div,span,form").find("span.inp-validation-icon").tooltip('hide');
-      $(element).closest("div,span,form").find("span.inp-validation-icon").tooltip('destroy');
-      $(element).closest("div,span,form").find("span.inp-validation-icon").remove();
-      $(element).addClass('valid');
-      $(element).removeClass('has-error');
-      $(element).closest('.input-group').addClass('valid');
-      $(element).closest('.input-group').removeClass('has-error');
+        $(element).closest('.form-group').removeClass('has-error');
     },
-    showErrors: function (errorMap, errorList) {
-      this.defaultShowErrors();
-      $.each(this.errorList, function (idx, item) {
-        var elm = $(item.element);
-        elm.closest("div,span,form").find("span.inp-validation-icon").tooltip('hide');
-        elm.closest("div,span,form").find("span.inp-validation-icon").tooltip('destroy');
-        elm.closest("div,span,form").find("span.inp-validation-icon").remove();
-        var errIco = $("<span class='inp-validation-icon glyphicon glyphicon-exclamation-sign'></span>").attr("title", htmlEncode(item.message));
-        errIco.insertAfter(elm);
-        errIco.tooltip({ placement: 'right', trigger: 'manual', container: 'body' });
-        errIco.tooltip('show');
-        $(window).on('resize', function () {
-          errIco.tooltip('show');
-        })
-      });
+    //highlight: function (element, errorClass, validClass) {
+    //    if (element.type === "radio") {
+    //        this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+    //    } else {
+    //        $(element).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
+    //        $(element).closest('.form-group').find('span.glyphicon').remove();
+    //        $(element).closest('.form-group').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+    //    }
+    //},
+    //unhighlight: function (element, errorClass, validClass) {
+    //    if (element.type === "radio") {
+    //        this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+    //    } else {
+    //        $(element).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
+    //        $(element).closest('.form-group').find('span.glyphicon').remove();
+    //        $(element).closest('.form-group').append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+    //    }
+    //},
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function (error, element) {
+        if (element.parent('.input-group').length || element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+            error.insertAfter(element.parent());
+        } else {
+            error.insertAfter(element);
+        }
     }
-  });
-}
-
+});

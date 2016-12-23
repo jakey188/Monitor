@@ -4,200 +4,191 @@
     ViewBag.Title = " 性能监视器";
 }
 @section script{
-<script>
-    $(function () {
-        var vue = new Vue({
-            el: '#app',
-            data: {
-                pageOptions: {
-                    currentPage: 1,
-                    totalPages: 1,
-                    alignment: "right",
-                    onPageClicked: function (e, originalEvent, type, page) {
-                        vue.pageOptions.currentPage = page;
-                        vue.getList();
-                    }
-                },
-                machineIpText:{ id: '',name:'服务器IP'},
-                collectTypeText: { id: '', name: '监控类型' },
-                collectTypeValue: '',
-                startDate: '',
-                endDate:'',
-                apiGetListUrl: '@Url.Content("~/")api/GetPerformanceCounterSnapshotList',
-                dataList: []
-            },
-            ready: function () {
-                this.getList();
-            },
-            methods: {
-                dropdownMachineChange: function (ip) {
-                    this.machineIpText.id = ip;
-                    this.machineIpText.name = ip;
-                    this.pageOptions.currentPage = 1;
-                    this.getList();
-                },
-                dropdownCollectTypeChange: function (type, collectName) {
-                    this.collectTypeText.id = type;
-                    this.collectTypeText.name = collectName;
-                },
-                clickSearchCollectType: function () {
-                    //if (this.collectTypeText.id.length === 0) {
-                    //    if (this.collectTypeValue.length === 0) {
-                    //        dialog.alert("请选择监控类型");
-                    //        return;
-                    //    }
-                    //}
-                    //if (this.collectTypeValue.length === 0) {
-                    //    dialog.alert("请输入数值");
-                    //    return;
-                    //}
-                    this.pageOptions.currentPage = 1;
-                    this.getList();
-                },
-                getList: function () {
-                    var vm = this;
-                    $.ajax({
-                        url: vm.apiGetListUrl,
-                        beforeSend: function () {
-                            loading();
-                        },
-                        type: 'get',
-                        dataType: 'json',
-                        data: {
-                            pageIndex: vm.pageOptions.currentPage,
-                            ip: vm.machineIpText.id,
-                            type: vm.collectTypeText.id,
-                            collectTypeValue: vm.collectTypeValue,
-                            startDate: vm.startDate,
-                            endDate: vm.endDate
-                        },
-                        success: function (response) {
-                            if (response.s === 10006) {
-                                vm.dataList = response.data;
-                                if (response.count > response.pgSize) {
-                                    vm.pageOptions.totalPages = getTotalPage(response.count, response.pgSize);
-                                    $('.pagination').bootstrapPaginator(vm.pageOptions);
-                                } else {
-                                    $('.pagination').html('');
-                                }
-                            }
-                            
-                        },
-                        complete: function () {
-                            loading(false);
+    <script>
+        $(function () {
+            var vue = new Vue({
+                el: '#app',
+                data: {
+                    total: 0,
+                    pageSize: 10,
+                    pageOptions: {
+                        currentPage: 1,
+                        bootstrapMajorVersion: 1,
+                        totalPages: 1,
+                        alignment: "right",
+                        onPageClicked: function (e, originalEvent, type, page) {
+                            vue.pageOptions.currentPage = page;
+                            vue.getList();
                         }
-                    })
+                    },
+                    machineIp: '',
+                    collectTypeText: '',
+                    collectTypeValue: '',
+                    startDate: '',
+                    endDate: '',
+                    apiGetListUrl: '@Url.Content("~/")api/GetPerformanceCounterSnapshotList',
+                    dataList: []
+                },
+                ready: function () {
+                    this.getList();
+                },
+                methods: {
+                    clickSearchCollectType: function () {
+                        this.pageOptions.currentPage = 1;
+                        this.getList();
+                    },
+                    getList: function () {
+                        var vm = this;
+                        $.ajax({
+                            url: vm.apiGetListUrl,
+                            beforeSend: function () {
+                                loading();
+                            },
+                            type: 'get',
+                            dataType: 'json',
+                            data: {
+                                pageIndex: vm.pageOptions.currentPage,
+                                pageSize: vm.pageSize,
+                                ip: vm.machineIp,
+                                type: vm.collectTypeText,
+                                collectTypeValue: vm.collectTypeValue,
+                                startDate: vm.startDate,
+                                endDate: vm.endDate
+                            },
+                            success: function (response) {
+                                if (response.s === 10006) {
+                                    vm.dataList = response.data;
+                                    vm.total = response.count;
+                                    if (vm.total > vm.pageSize) {
+                                        vm.pageOptions.totalPages = getTotalPage(response.count, response.pgSize);
+                                        $('.pagination').bootstrapPaginator(vm.pageOptions);
+                                    } else {
+                                        $('.pagination').html('');
+                                    }
+                                }
+
+                            },
+                            complete: function () {
+                                loading(false);
+                            }
+                        })
+                    }
                 }
-            }
+            });
         });
-    });
-</script>
+    </script>
 }
 @section scriptSrc{
-    <script src="~/Statics/js/bootstrap-paginator.js"></script>   
-    <script src="~/Statics/js/My97DatePicker/WdatePicker.js"></script> 
+    <script src="~/Statics/js/bootstrap-paginator.js"></script>
+    <script src="~/Statics/js/My97DatePicker/WdatePicker.js"></script>
 }
-<ul class="breadcrumb">
-    <li>
-        <a href="/">监控中心</a> <span class="divider">/</span>
-    </li>
-    <li class="active">
-        性能监视器
-    </li>
-</ul>
-<div class="container">
-    <div class="row">
-        <div class="span12">
-            <form class="form-horizontal" action="javascript:void(0)">
-                <div class="control-group">
-                    <label class="control-label">请选择服务器IP：</label>
-                    <div class="controls">
-                        <div class="btn-group">
-                            <button class="btn" contenteditable="true">{{machineIpText.name}}</button>
-                            <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
-                            <ul class="dropdown-menu" contenteditable="true">
-                                @{
-                                    var computerList = ViewBag.ComputerInfoList as List<ClusterComputerInfo>;
-                                }
-                                @foreach (var item in computerList)
-                                {
-                                    <li><a v-on:click="dropdownMachineChange('@item.MachineIp')">@item.MachineIp</a></li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
+<div class="container-fluid">
+    <div class="info-center">
+        <div class="page-header">
+            <div class="pull-left">
+                <h4>列表信息</h4>
+            </div>
+        </div>
+        <div class="search-box row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <span class="pull-left form-span">服务器:</span>
+                    <select class="form-control" v-model="machineIp">
+                        <option value="">-请选择服务器IP-</option>
+                        @{
+                            var computerList = ViewBag.ComputerInfoList as List<ClusterComputerInfo>;
+                        }
+                        @foreach (var item in computerList)
+                        {
+                            <option value="@item.MachineIp">@item.MachineIp</option>
+                        }
+                    </select>
                 </div>
-                <div class="control-group">
-                    <label class="control-label">请选择监控日期：</label>
-                    <div class="controls">
-                        <input class="input-medium" v-model="startDate" placeholder="开始日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />至
-                        <input class="input-medium" v-model="endDate" placeholder="结束日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
-                    </div>
-                    </div>
-                <div class="control-group">
-                    <label class="control-label">请选择监控类型：</label>
-                    <div class="controls">
-                        <div class="btn-group">
-                            <button class="btn" contenteditable="true">{{collectTypeText.name}}</button>
-                            <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
-                            <ul class="dropdown-menu" contenteditable="true">
-                                <li><a v-on:click="dropdownCollectTypeChange(1,'CPU')">CPU</a></li>
-                                <li><a v-on:click="dropdownCollectTypeChange(2,'内存')">内存</a></li>
-                                <li><a v-on:click="dropdownCollectTypeChange(5,'IIS请求数')">IIS请求数</a></li>
-                            </ul>
-                        </div>
-                        <input class="input-medium " v-model="collectTypeValue" type="number" placeholder="请输入监控类型的值" /> <button type="button" v-on:click="clickSearchCollectType()" class="btn btn-primary">查找</button>
-                    </div>
-                    </div>
-                    </form>
+                <div class="form-group">
+                    <span class="pull-left form-span">请选择监控日期:</span>
+                    <input class="form-control input-medium" v-model="startDate" placeholder="开始日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control input-medium" v-model="endDate" placeholder="结束日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
+                </div>
+                <div class="form-group">
+                    <span class="pull-left form-span">监控类型:</span>
+                    <select class="form-control" v-model="collectTypeText">
+                        <option value="">-请选择类型-</option>
+                        <option value="1">CPU</option>
+                        <option value="2">内存</option>
+                        <option value="5">IIS请求数</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control input-medium " v-model="collectTypeValue" type="number" placeholder="监控类型的值" />
+                </div>
+                <div class="form-group btn-search">
+                    <button v-on:click="clickSearchCollectType()" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="table-margin">
+            <table class="table table-bordered table-header">
+                <thead>
+                    <tr>
+                        <th>
+                            服务器名称
+                        </th>
+                        <th>
+                            服务器IP
+                        </th>
+                        <th>
+                            CPU
+                        </th>
+                        <th>
+                            内存
+                        </th>
+                        <th>
+                            IIS请求数
+                        </th>
+                        <th>
+                            创建时间
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in dataList">
+                        <td>
+                            {{item.machineName}}
+                        </td>
+                        <td>
+                            {{item.machineIP}}
+                        </td>
+                        <td>
+                            {{item.cpu}}
+                        </td>
+                        <td>
+                            {{item.memory}}
+                        </td>
+                        <td>
+                            {{item.iis}}
+                        </td>
+                        <td>
+                            {{item.createTime}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot v-show="total>pageSize">
+                    <tr>
+                        <td colspan="6">
+                            <div class="pull-right">
+                                <nav>
+                                    <div class="pagination pagination-right"></div>
+                                </nav>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>
-                服务器名称
-            </th>
-            <th>
-                服务器IP
-            </th>
-            <th>
-                CPU
-            </th>
-            <th>
-                内存
-            </th>
-            <th>
-                IIS请求数
-            </th>
-            <th>
-                创建时间
-            </th>
-        </tr>
-    </thead>
-    <tbody v-for="item in dataList">
-            <tr>
-                <td>
-                    {{item.machineName}}
-                </td>
-                <td>
-                    {{item.machineIP}}
-                </td>
-                <td>
-                    {{item.cpu}}
-                </td>
-                <td>
-                    {{item.memory}}
-                </td>
-                <td>
-                    {{item.iis}}
-                </td>
-                <td>
-                    {{item.createTime}}
-                </td>
-            </tr>
-    </tbody>
-</table>
-<div class="pagination pagination-right"></div>
-

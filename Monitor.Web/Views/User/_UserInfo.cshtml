@@ -1,82 +1,51 @@
-﻿<div id="addUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">用户信息</h3>
+﻿@model Monitor.Models.Entites.User
+<form class="form-horizontal" id="createUserInfoForm" action="javascript:void(0)">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">用户名：</label>
+        <div class="col-sm-9">
+            <input type="hidden" value="@(string.IsNullOrEmpty(Model.UserName) ? string.Empty : Model.Id.ToString())" id="id" name="id" />
+            <input type="text"  name="userName"  id="userName" value="@Model.UserName"  placeholder="请输入用户名" class="form-control">
+        </div>
     </div>
-    <div class="modal-body">
-        <form class="form-horizontal" id="createUserInfoForm" action="javascript:void(0)">
-            <div class="control-group">
-
-                <!-- Text input-->
-                <label class="control-label" for="input01">用户名</label>
-                <div class="controls">
-                    <input type="text" name="userName" required id="userName" placeholder="请输入用户名" class="input-xlarge">
-                    <p class="help-block"></p>
-                </div>
-            </div>
-
-            <div class="control-group">
-
-                <!-- Text input-->
-                <label class="control-label" for="input01">真实姓名</label>
-                <div class="controls">
-                    <input type="text" required placeholder="请输入真实姓名" class="input-xlarge">
-                    <p class="help-block"></p>
-                </div>
-            </div>
-
-            <div class="control-group">
-
-                <!-- Text input-->
-                <label class="control-label" for="input01">密码</label>
-                <div class="controls">
-                    <input type="text" required placeholder="请输入密码" class="input-xlarge">
-                    <p class="help-block"></p>
-                </div>
-            </div>
-
-            <div class="control-group">
-
-                <!-- Select Basic -->
-                <label class="control-label">角色</label>
-                <div class="controls">
-                    <select class="input-xlarge">
-                        <option>管理员</option>
-                        <option>开发人员</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="control-group">
-
-                <!-- Text input-->
-                <label class="control-label" for="input01">手机号码</label>
-                <div class="controls">
-                    <input type="number" required placeholder="请输入手机号码" class="input-xlarge">
-                    <p class="help-block"></p>
-                </div>
-            </div>
-
-            <div class="control-group">
-
-                <!-- Text input-->
-                <label class="control-label" for="input01">邮箱</label>
-                <div class="controls">
-                    <input type="email" required  placeholder="请输入邮箱" class="input-xlarge">
-                    <p class="help-block"></p>
-                </div>
-            </div>
-            <div class="control-group">
-
-               
-                <div class="controls">
-                    <input type="submit" class="btn btn-primary" v-on:click="createUser()" value="提交">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true" value="取消">
-                </div>
-            </div>
-        </form>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">真实姓名：</label>
+        <div class="col-sm-9">
+            <input type="text" placeholder="请输入真实姓名" value="@Model.TrueName" id="trueName" name="trueName" class="form-control">
+        </div>
     </div>
-</div>
-
-
+    <div class="form-group">
+        <label class="col-sm-3 control-label">密码：</label>
+        <div class="col-sm-9">
+            <input type="text" placeholder="请输入密码" value="@Model.Password" id="password" name="password" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">角色：</label>
+        <div class="col-sm-9">
+            <select class="form-control input-xlarge" id="role" name="role">
+                <option value="1">管理员</option>
+                <option value="2">开发人员</option="2">
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="input01">手机号码：</label>
+        <div class="col-sm-9">
+            <input type="number" placeholder="请输入手机号码" value="@Model.Mobile" id="mobile" name="mobile" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="input01">邮箱：</label>
+        <div class="col-sm-9">
+            <input type="email" placeholder="请输入邮箱" id="email" value="@Model.Email" name="email"   class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label " for="input01"></label>
+        <div class="col-sm-9">
+            <button type="submit" id="userInfoSubmit" data-loading-text="提交中..." class="btn btn-primary" >
+                提交
+            </button>
+        </div>
+    </div>
+</form>

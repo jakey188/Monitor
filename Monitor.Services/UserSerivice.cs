@@ -16,19 +16,16 @@ namespace Monitor.Services
         /// 添加或者更新用户
         /// </summary>
         /// <param name="model">用户对象</param>
-        public void AddOrUpdate(User model)
+        public bool Add(User model)
         {
             var db = new MongoDbContext();
             var user = db.Where<User>(x => x.UserName == model.UserName).FirstOrDefault();
             if (user == null)
             {
                 db.Add(model);
+                return true;
             }
-            else
-            {
-                model.Id = user.Id;
-                db.Update(model);
-            }
+            return false;
         }
 
         public void Update(User model)
@@ -44,6 +41,12 @@ namespace Monitor.Services
             db.Delete<User>(x => x.Id == objectId);
         }
 
+        public bool IsExitUser(string userName)
+        {
+            var db = new MongoDbContext();
+            return db.Where<User>(x => x.UserName == userName).Any();
+        }
+
         public User Get(string id)
         {
             var db = new MongoDbContext();
@@ -51,10 +54,13 @@ namespace Monitor.Services
             return db.Where<User>(x => x.Id == objectId).FirstOrDefault();
         }
 
-        public List<User> GetUserList(int pageIndex,int pageSize,out int total)
+        public List<User> GetUserList(string userName,int pageIndex,int pageSize,out int total)
         {
             var db = new MongoDbContext();
-            return db.Where<User>().OrderByDescending(x => x.Id).ToPageList(pageIndex,pageSize,out total);
+            var query = db.Where<User>();
+            if (!string.IsNullOrEmpty(userName))
+                query = query.Where(x => x.UserName == userName);
+            return query.OrderByDescending(x => x.Id).ToPageList(pageIndex,pageSize,out total);
         }
     }
 }

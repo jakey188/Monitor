@@ -10,6 +10,8 @@
         var vue = new Vue({
             el: '#app',
             data: {
+                total: 0,
+                pageSize:10,
                 pageOptions: {
                     currentPage: 1,
                     totalPages: 1,
@@ -44,6 +46,7 @@
                         dataType: 'json',
                         data: {
                             pageIndex: vm.pageOptions.currentPage,
+                            pageSize:vm.pageSize,
                             url:vm.url,
                             startDate: vm.startDate,
                             endDate: vm.endDate
@@ -51,7 +54,8 @@
                         success: function (response) {
                             if (response.s === 10006) {
                                 vm.dataList = response.data;
-                                if (response.count > response.pgSize) {
+                                vm.total = response.count;
+                                if (vm.total > vm.pageSize) {
                                     vm.pageOptions.totalPages = getTotalPage(response.count, response.pgSize);
                                     $('.pagination').bootstrapPaginator(vm.pageOptions);
                                 } else {
@@ -74,82 +78,82 @@
     <script src="~/Statics/js/bootstrap-paginator.js"></script>
     <script src="~/Statics/js/My97DatePicker/WdatePicker.js"></script>
 }
-<ul class="breadcrumb">
-    <li>
-        <a href="/">监控中心</a> <span class="divider">/</span>
-    </li>
-    <li class="active">
-       请求耗时列表
-    </li>
-</ul>
-<div class="container">
-    <div class="row">
-        <div class="span12">
-            <form class="form-horizontal" action="javascript:void(0)">
-                <div class="control-group">
-                    <label class="control-label">请选择监控日期：</label>
-                    <div class="controls">
-                        <input class="input-medium" v-model="startDate" placeholder="开始日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />至
-                        <input class="input-medium" v-model="endDate" placeholder="结束日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">请求URL：</label>
-                    <div class="controls">
-                        <input class="span6" type="text" v-model="url" placeholder="请输入URL或者关键字" />
-                    </div>
-                </div>
-                <div class="control-group">
-                   
-                    <div class="controls">
-                        <button type="button" v-on:click="clickSearchHttpWatch()" class="btn btn-primary">查找</button>
-                    </div>
-                </div>
-            </form>
+<div class="container-fluid">
+    <div class="info-center">
+        <div class="page-header">
+            <div class="pull-left">
+                <h4>列表信息</h4>
+            </div>
         </div>
+        <div class="search-box row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <span class="pull-left form-span">请选择监控日期:</span>
+                    <input class="form-control input-medium" v-model="startDate" placeholder="开始日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control input-medium" v-model="endDate" placeholder="结束日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control" style="width:250px;" type="text" v-model="url" placeholder="URL或者关键字" />
+                </div>
+                <div class="form-group btn-search">
+                    <button class="btn btn-primary" v-on:click="clickSearchHttpWatch()"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="table-margin">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            URL
+                        </th>
+                        <th>
+                            平均时间/毫秒
+                        </th>
+                        <th>
+                            最大时间/毫秒
+                        </th>
+                        <th>
+                            最小时间/毫秒
+                        </th>
+                        <th>
+                            调用次数
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in dataList">
+                        <td>
+                            {{item.url}}
+                        </td>
+                        <td>
+                            {{item.avgTime}}
+                        </td>
+                        <td>
+                            {{item.maxTime}}
+                        </td>
+                        <td>
+                            {{item.minTime}}
+                        </td>
+                        <td>
+                            {{item.callCount}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot v-show="total>pageSize">
+                    <tr>
+                        <td colspan="5">
+                            <div class="pull-right">
+                                <nav>
+                                    <div class="pagination pagination-right"></div>
+                                </nav>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
     </div>
 </div>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>
-                URL
-            </th>
-            <th>
-                平均时间/毫秒
-            </th>
-            <th>
-                最大时间/毫秒
-            </th>
-            <th>
-                最小时间/毫秒
-            </th>
-            <th>
-                调用次数
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        
-            <tr v-for="item in dataList">
-                <td>
-                    {{item.url}}
-                </td>
-                <td>
-                    {{item.avgTime}}
-                </td>
-                <td>
-                    {{item.maxTime}}
-                </td>
-                <td>
-                    {{item.minTime}}
-                </td>
-                <td>
-                    {{item.callCount}}
-                </td>
-            </tr>
-        
-    </tbody>
-</table>
-<div class="pagination pagination-right"></div>
-
