@@ -45,12 +45,6 @@ namespace Monitor.Web.Controllers
             return Success();
         }
 
-        [Route("~/api/user/update"),HttpPost]
-        public JsonResult Update(User user)
-        {
-            _userSerivice.Update(user);
-            return Success();
-        }
 
         [Route("~/api/user/add"), HttpPost]
         public JsonResult Add(string id,string userName,string trueName,string role,string mobile,string email,string password)
@@ -64,6 +58,7 @@ namespace Monitor.Web.Controllers
                     u.Role = Convert.ToInt32(role);
                     u.Mobile = mobile;
                     u.Email = email;
+                    u.Password = password;
                 }
                 _userSerivice.Update(u);
             }

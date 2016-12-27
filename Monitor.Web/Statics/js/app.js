@@ -43,13 +43,14 @@ var app = {
     tips: function (content, callback) {
         var dialog = new BootstrapDialog({
             title: '提示',
+            type:BootstrapDialog.TYPE_INFO,
             size: BootstrapDialog.SIZE_SMALL,
             message: content
         });
         dialog.open();
         setTimeout(function () {
             dialog.close();
-            callback();
+            callback && callback();
         }, 2000);
     },
     dialog: function (options) {

@@ -126,10 +126,30 @@
     <Content Include="Statics\img\waiting.gif" />
     <Content Include="Statics\js\app.js" />
     <Content Include="Statics\js\bootstrap-paginator.js" />
+    <Content Include="Statics\js\dialog\js\bootstrap-dialog.js" />
+    <Content Include="Statics\js\dialog\js\bootstrap-dialog.min.js" />
     <Content Include="Statics\js\jquery.cookie.js" />
     <Content Include="Statics\js\jquery.min.js" />
     <Content Include="Statics\js\jquery.validate.bootstrap.js" />
     <Content Include="Statics\js\jquery.validate.min.js" />
+    <Content Include="Statics\js\My97DatePicker\calendar.js" />
+    <Content Include="Statics\js\My97DatePicker\config.js" />
+    <Content Include="Statics\js\My97DatePicker\lang\en.js" />
+    <Content Include="Statics\js\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Statics\js\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Statics\js\My97DatePicker\My97DatePicker.htm" />
+    <Content Include="Statics\js\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Statics\js\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Statics\js\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Statics\js\My97DatePicker\skin\twoer\datepicker-dev.css" />
+    <Content Include="Statics\js\My97DatePicker\skin\twoer\datepicker.css" />
+    <Content Include="Statics\js\My97DatePicker\skin\twoer\img.gif" />
+    <Content Include="Statics\js\My97DatePicker\skin\twoer\img.png" />
+    <Content Include="Statics\js\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Statics\js\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Statics\js\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Statics\js\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Statics\js\My97DatePicker\WdatePicker.js" />
     <Content Include="Statics\js\vue.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -137,16 +157,21 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ClusterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HttpWatchController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\PerformanceCounterController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Core\Extensions\ContollerExtensions.cs" />
     <Compile Include="Core\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Core\Extensions\JsonExtension.cs" />
+    <Compile Include="Core\Filter\AuthorizeAttribute.cs" />
+    <Compile Include="Core\Filter\LoginAuthorizeAttribute.cs" />
     <Compile Include="Core\JsonNetResult.cs" />
     <Compile Include="Core\Response\AjaxResponse.cs" />
     <Compile Include="Core\Response\CodeStruct.cs" />
     <Compile Include="Core\Response\CodeTip.cs" />
+    <Compile Include="Core\UserContext.cs" />
     <Compile Include="Core\WebdiyerPagedListExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -156,18 +181,19 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Cluster\ComputerList.cshtml" />
-    <Content Include="Views\Cluster\HttpWatchList.cshtml" />
-    <Content Include="Views\Cluster\PerformanceCounterSnapshotList.cshtml" />
-    <Content Include="Views\Cluster\Charts.cshtml" />
-    <Content Include="Views\Cluster\HttpWatchReportList.cshtml" />
+    <Content Include="Views\HttpWatch\List.cshtml" />
+    <Content Include="Views\PerformanceCounter\SnapshotList.cshtml" />
+    <Content Include="Views\PerformanceCounter\Charts.cshtml" />
+    <Content Include="Views\HttpWatch\ReportList.cshtml" />
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\User\_UserInfo.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index - 复制.cshtml" />
+    <Content Include="Statics\js\dialog\less\bootstrap-dialog.less" />
+    <Content Include="Statics\js\My97DatePicker\skin\twoer.zip" />
+    <Content Include="Views\PerformanceCounter\ChartsSnapshotReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,6 +12,7 @@
                         form = $('#createUserInfoForm');
 
                     form.validate({
+                        ignore: ":hidden",
                         rules: {
                             userName: {
                                 required: true
@@ -105,8 +106,8 @@
                             vue.getList();
                         }
                     },
-                    apiGetListUrl: '@Url.Content("~/")api/GetUserList',
-                    apiDeleteUrl: '@Url.Content("~/")api/Computer/Delete',
+                    apiGetListUrl: '@Url.Action("GetUserList","User")',
+                    apiDeleteUrl: '@Url.Action("DeleteUser","User")',
                     dataList: []
                 },
                 ready: function () {
@@ -223,8 +224,8 @@
             </div>
         </div>
         <div class="clearfix"></div>
-        <div class="table-margin">
-            <table class="table table-bordered table-header">
+        <div class="table-margin table-responsive">
+            <table class="table table-bordered table-header table-hover">
                 <thead>
                     <tr>
                         <th>
@@ -256,7 +257,7 @@
                             {{item.trueName}}
                         </td>
                         <td>
-                            {{item.role}}
+                            {{item.role==1 ? "管理员" : "开发人员"}}
                         </td>
                         <td>
                             {{item.mobile}}
@@ -265,8 +266,8 @@
                             {{item.email}}
                         </td>
                         <td>
-                            <a href="javascript:void(0)" v-on:click="del(item.id)">删除</a>
-                            <a href="javascript:void(0)" v-on:click="edit(item.id)">编辑</a>
+                            <button type="button" v-on:click="del(item.id)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>删除</button>
+                            <button type="button" v-on:click="edit(item.id)" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span>编辑</button>
                         </td>
                     </tr>
                 </tbody>

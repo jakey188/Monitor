@@ -1,4 +1,7 @@
-﻿@functions{
+﻿@{
+    var userInfo = Monitor.Web.Core.UserContext.GetLoginInfo();
+}
+@functions{
     bool LeftNemu(string a,string c)
     {
         var controller = Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
@@ -16,15 +19,14 @@
     <title>@ViewBag.Title</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" title="">
     <link href="~/Statics/css/dialog/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" title="">
-    <link href="~/Statics/css/style.css" rel="stylesheet" type="text/css" title=""/>
-    <link href="~/Statics/css/default.css" rel="stylesheet" type="text/css" title="blue"/>
-    <link href="~/Statics/css/green.css" rel="stylesheet" type="text/css" title="green" disabled="disabled"/>
-    <link href="~/Statics/css/orange.css" rel="stylesheet" type="text/css" title="orange"  disabled="disabled"/>
+    <link href="~/Statics/css/style.css" rel="stylesheet" type="text/css" title="" />
+    <link href="~/Statics/css/default.css" rel="stylesheet" type="text/css" title="blue" />
+    <link href="~/Statics/css/green.css" rel="stylesheet" type="text/css" title="green" disabled="disabled" />
+    <link href="~/Statics/css/orange.css" rel="stylesheet" type="text/css" title="orange" disabled="disabled" />
     <link href="~/Statics/css/templatecss.css" rel="stylesheet" title="" type="text/css" />
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
-<body  id="app">
-    
+<body id="app">
     <nav class="nav navbar-default navbar-mystyle navbar-fixed-top">
         <div class="navbar-header">
             <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -36,126 +38,125 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="li-border"><a class="mystyle-color" href="#">管理控制台</a></li>
+                <li class="li-border"><a class="mystyle-color" href="javascript:void(0)">管理控制台</a></li>
                 <li class="dropdown li-border">
-                    <a href="#" class="dropdown-toggle mystyle-color" data-toggle="dropdown">产品与服务<span class="caret"></span></a>
-                    <!----下拉框选项---->
-                    <div class="dropdown-menu topbar-nav-list">
-                        <div class="topbar-nav-col">
-                            <div class="topbar-nav-item">
-                                <p class="topbar-nav-item-title">弹性计算</p>
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-road"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-picture"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-gift"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                    @*<a href="#" class="dropdown-toggle mystyle-color" data-toggle="dropdown">产品与服务<span class="caret"></span></a>
+
+                        <div class="dropdown-menu topbar-nav-list">
+                            <div class="topbar-nav-col">
+                                <div class="topbar-nav-item">
+                                    <p class="topbar-nav-item-title">弹性计算</p>
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-road"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-picture"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-gift"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="">
+                                    <p class="topbar-nav-item-title">弹性计算</p>
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-road"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-picture"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-gift"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
 
-                            <div class="">
-                                <p class="topbar-nav-item-title">弹性计算</p>
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-road"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-picture"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-gift"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
 
+                            <div class="topbar-nav-col">
+                                <div class="topbar-nav-item">
+                                    <p class="topbar-nav-item-title">弹性计算</p>
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-road"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-picture"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-gift"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                        <div class="topbar-nav-col">
-                            <div class="topbar-nav-item">
-                                <p class="topbar-nav-item-title">弹性计算</p>
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-road"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-picture"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-gift"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                <div class="">
+                                    <p class="topbar-nav-item-title">弹性计算</p>
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-road"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-picture"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-gift"></span>
+                                                <span class="">云服务器 ECS</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                            <div class="">
-                                <p class="topbar-nav-item-title">弹性计算</p>
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-road"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-picture"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-gift"></span>
-                                            <span class="">云服务器 ECS</span>
-                                        </a>
-                                    </li>
-                                </ul>
                             </div>
 
-                        </div>
-
-                    </div>
+                        </div>*@
                 </li>
             </ul>
-
             <ul class="nav navbar-nav pull-right">
                 <li class="li-border">
-                    <a href="#" class="mystyle-color">
+                    <a href="javascript:void(0)" class="mystyle-color">
                         <span class="glyphicon glyphicon-bell"></span>
                         <span class="topbar-num">0</span>
                     </a>
                 </li>
                 <li class="li-border dropdown">
-                    <a href="#" class="mystyle-color" data-toggle="dropdown">
+                    <a href="javascript:void(0)" class="mystyle-color" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-search"></span> 搜索
                     </a>
                     <div class="dropdown-menu search-dropdown">
@@ -168,29 +169,19 @@
                     </div>
                 </li>
                 <li class="dropdown li-border">
-                    <a href="#" class="dropdown-toggle mystyle-color" data-toggle="dropdown">帮助与文档<span class="caret"></span></a>
+                    <a href="javascript:void(0)" class="dropdown-toggle mystyle-color" data-toggle="dropdown">@userInfo.TrueName<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">帮助与文档</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">论坛</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">博客</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown li-border">
-                    <a href="#" class="dropdown-toggle mystyle-color" data-toggle="dropdown">605875855@qq.com<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="login.html">退出</a></li>
+                        <li><a href="@(Url.Action("Logout","Login",new { returnUrl=HttpUtility.UrlEncode(Request.Url.ToString()) }))">退出</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle mystyle-color" data-toggle="dropdown">换肤<span class="caret"></span></a>
                     <ul class="dropdown-menu changecolor">
-                        <li id="blue"><a href="#">蓝色</a></li>
+                        <li id="blue"><a href="javascript:void(0)">蓝色</a></li>
                         <li class="divider"></li>
-                        <li id="green"><a href="#">绿色</a></li>
+                        <li id="green"><a href="javascript:void(0)">绿色</a></li>
                         <li class="divider"></li>
-                        <li id="orange"><a href="#">橙色</a></li>
+                        <li id="orange"><a href="javascript:void(0)">橙色</a></li>
                     </ul>
                 </li>
             </ul>
@@ -201,7 +192,7 @@
             <div class="sidebar-fold"><span class="glyphicon glyphicon-list"></span></div>
             <div class="subNavBox">
                 <div class="sBox">
-                    <div class="subNav sublist-down">
+                    <div class="subNav sublist-down"><!-- sublist-up glyphicon-chevron-up -->
                         <span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">服务器</span>
                     </div>
                     <ul class="navContent" style="display:block">
@@ -209,32 +200,36 @@
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />列表信息</div>
                             <a href="@Url.Action("ComputerList","Cluster")"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">列表信息</span></a>
                         </li>
-                        <li class="@(LeftNemu("PerformanceCounterSnapshotList","Cluster") ? "active" : "")">
+                        <li class="@(LeftNemu("SnapshotList","PerformanceCounter") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />性能记录</div>
-                            <a href="@Url.Action("PerformanceCounterSnapshotList","Cluster")"><span class="sublist-icon glyphicon glyphicon-envelope"></span><span class="sub-title">性能记录</span></a>
+                            <a href="@Url.Action("SnapshotList","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-envelope"></span><span class="sub-title">性能记录</span></a>
                         </li>
-                        <li class="@(LeftNemu("Charts","Cluster") ? "active" : "")">
+                        <li class="@(LeftNemu("ChartsSnapshotReport","PerformanceCounter") ? "active" : "")">
+                            <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />性能快照图</div>
+                            <a href="@Url.Action("ChartsSnapshotReport","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-bullhorn"></span><span class="sub-title">性能快照图</span></a>
+                        </li>
+                        <li class="@(LeftNemu("Charts","PerformanceCounter") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />性能实时图</div>
-                            <a href="@Url.Action("Charts","Cluster")"><span class="sublist-icon glyphicon glyphicon-bullhorn"></span><span class="sub-title">性能实时图</span></a>
+                            <a href="@Url.Action("Charts","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-bullhorn"></span><span class="sub-title">性能实时图</span></a>
                         </li>
                     </ul>
                 </div>
                 <div class="sBox">
-                    <div class="subNav sublist-up"><span class="title-icon glyphicon glyphicon-chevron-up"></span><span class="sublist-title">HTTP</span></div>
-                    <ul class="navContent" style="display:none">
-                        <li class="@(LeftNemu("HttpWatchList","Cluster") ? "active" : "")">
+                    <div class="subNav sublist-down"><span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">HTTP</span></div>
+                    <ul class="navContent" style="display:block">
+                        <li class="@(LeftNemu("List","HttpWatch") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />耗时记录</div>
-                            <a href="@Url.Action("HttpWatchList","Cluster")"><span class="sublist-icon glyphicon glyphicon-credit-card"></span><span class="sub-title">耗时记录</span></a>
+                            <a href="@Url.Action("List","HttpWatch")"><span class="sublist-icon glyphicon glyphicon-credit-card"></span><span class="sub-title">耗时记录</span></a>
                         </li>
-                        <li class="@(LeftNemu("HttpWatchReportList","Cluster") ? "active" : "")">
+                        <li class="@(LeftNemu("ReportList","HttpWatch") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />耗时统计</div>
-                            <a href="@Url.Action("HttpWatchReportList","Cluster")"><span class="sublist-icon glyphicon glyphicon-credit-card"></span><span class="sub-title">耗时统计</span></a>
+                            <a href="@Url.Action("ReportList","HttpWatch")"><span class="sublist-icon glyphicon glyphicon-credit-card"></span><span class="sub-title">耗时统计</span></a>
                         </li>
                     </ul>
                 </div>
                 <div class="sBox">
-                    <div class="subNav sublist-up"><span class="title-icon glyphicon glyphicon-chevron-up"></span><span class="sublist-title">账户</span></div>
-                    <ul class="navContent" style="display:none">
+                    <div class="subNav sublist-down"><span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">账户</span></div>
+                    <ul class="navContent" style="display:block">
                         <li class="@(LeftNemu("Index","Home") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />用户管理</div>
                             <a href="@Url.Action("List","User")"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">用户管理</span></a>
@@ -251,7 +246,7 @@
     <div id="ajaxLoading" class="showbox">
         <div class="loadingWord"><img src="~/Statics/img/waiting.gif">加载中，请稍候...</div>
     </div>
-   
+
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="~/Statics/js/dialog/js/bootstrap-dialog.min.js"></script>
@@ -262,59 +257,47 @@
     @RenderSection("script",false)
     <script type="text/javascript">
         $(function () {
-            /*换肤*/
             $(".dropdown .changecolor li").click(function () {
                 var style = $(this).attr("id");
                 $("link[title!='']").attr("disabled", "disabled");
                 $("link[title='" + style + "']").removeAttr("disabled");
-                $.cookie('mystyle', style, { expires: 7 }); // 存储一个带7天期限的 cookie
+                $.cookie('mystyle', style, { expires: 7 });
             })
             var cookie_style = $.cookie("mystyle");
             if (cookie_style != null) {
                 $("link[title!='']").attr("disabled", "disabled");
                 $("link[title='" + cookie_style + "']").removeAttr("disabled");
             }
-            /*左侧导航栏显示隐藏功能*/
+
             $(".subNav").click(function () {
-                /*显示*/
                 if ($(this).find("span:first-child").attr('class') == "title-icon glyphicon glyphicon-chevron-down") {
                     $(this).find("span:first-child").removeClass("glyphicon-chevron-down");
                     $(this).find("span:first-child").addClass("glyphicon-chevron-up");
                     $(this).removeClass("sublist-down");
                     $(this).addClass("sublist-up");
                 }
-                    /*隐藏*/
                 else {
                     $(this).find("span:first-child").removeClass("glyphicon-chevron-up");
                     $(this).find("span:first-child").addClass("glyphicon-chevron-down");
                     $(this).removeClass("sublist-up");
                     $(this).addClass("sublist-down");
                 }
-                // 修改数字控制速度， slideUp(500)控制卷起速度
                 $(this).next(".navContent").slideToggle(300).siblings(".navContent").slideUp(300);
             })
-            /*左侧导航栏缩进功能*/
             $(".left-main .sidebar-fold").click(function () {
-
                 if ($(this).parent().attr('class') == "left-main left-full") {
                     $(this).parent().removeClass("left-full");
                     $(this).parent().addClass("left-off");
-
                     $(this).parent().parent().find(".right-product").removeClass("right-full");
                     $(this).parent().parent().find(".right-product").addClass("right-off");
-
                 }
                 else {
                     $(this).parent().removeClass("left-off");
                     $(this).parent().addClass("left-full");
-
                     $(this).parent().parent().find(".right-product").removeClass("right-off");
                     $(this).parent().parent().find(".right-product").addClass("right-full");
-
                 }
             })
-
-            /*左侧鼠标移入提示功能*/
             $(".sBox ul li").mouseenter(function () {
                 if ($(this).find("span:last-child").css("display") == "none")
                 { $(this).find("div").show(); }

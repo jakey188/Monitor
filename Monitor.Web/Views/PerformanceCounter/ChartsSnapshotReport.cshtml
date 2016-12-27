@@ -1,0 +1,250 @@
+﻿@using Monitor.Models;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = " 性能监视器统计图快照报表";
+    var computerList = ViewBag.ComputerInfoList as List<ClusterComputerInfo>;
+    var defaultComputer = computerList.FirstOrDefault();
+}
+
+@section scriptSrc{
+    <script src="http://cdn.bootcss.com/echarts/3.3.2/echarts.common.js"></script>
+}
+@section script{
+    <script>
+
+        $(function () {
+
+            var cpuChart = echarts.init(document.getElementById('cpuContainer'));
+            var iisChart = echarts.init(document.getElementById('iisContainer'));
+            var memoryChart = echarts.init(document.getElementById('memoryContainer'));
+
+            var vue = new Vue({
+                el: '#app',
+                data: {
+                    machineIp: '@(defaultComputer!=null ? defaultComputer.MachineIp : string.Empty)',
+                    type:1,
+                    apiGetChartDataUrl: '@Url.Action("GetSnapshotChartsReport","PerformanceCounter")',
+                    dataList: []
+                },
+                ready: function () {
+                    
+                },
+                methods: {
+                    clickSearchCharts: function (ip) {
+                        var vm = this;
+                        this.initChartOption();
+                        vm.getChartData();
+                    },
+                    
+                    initChartOption: function () {
+
+                        // 显示标题，图例和空的坐标轴
+                        cpuChart.setOption({
+                            title: {
+                                left: 'center',
+                                text: 'CPU使用率',
+                                subtext: 'CPU【max】值统计图,采集单位【秒】'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                data: []
+                            },
+                            yAxis: {
+                                min: 0,
+                                max: 100
+                            },
+                            series: [{
+                                // 根据名字对应到相应的系列
+                                name: 'CPU使用率',
+                                smooth: true,
+                                symbol: 'none',
+                                itemStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                areaStyle: {
+                                    normal: {
+                                        color: "#39B7CE",
+                                        opacity: 0.8
+                                    }
+                                },
+                                type: 'line',
+                                data: []
+                            }]
+                        });
+                        iisChart.setOption({
+                            title: {
+                                left: 'center',
+                                text: 'IIS请求数',
+                                subtext: 'IIS请求数【max】值统计图,采集单位【秒】'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                data: []
+                            },
+                            yAxis: {
+
+                            },
+                            series: [{
+                                // 根据名字对应到相应的系列
+                                name: 'IIS请求数',
+                                smooth: true,
+                                symbol: 'none',
+                                itemStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                areaStyle: {
+                                    normal: {
+                                        color: "#39B7CE",
+                                        opacity: 0.8
+                                    }
+                                },
+                                type: 'line',
+                                data: []
+                            }]
+                        });
+                        memoryChart.setOption({
+                            title: {
+                                left: 'center',
+                                text: '内存使用',
+                                subtext: '内存【max】值统计图,采集单位【秒】'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                offset: 10,
+                                data: []
+                            },
+                            yAxis: {
+
+                            },
+                            series: [{
+                                // 根据名字对应到相应的系列
+                                name: '内存使用',
+                                smooth: true,
+                                symbol: 'none',
+                                itemStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                areaStyle: {
+                                    normal: {
+                                        color: "#39B7CE",
+                                        opacity: 0.8
+                                    }
+                                },
+                                type: 'line',
+                                data: []
+                            }]
+                        });
+                    },
+                    getChartData: function () {
+                        var vm = this;
+                        $.get(vm.apiGetChartDataUrl, { ip: vm.machineIp,type:vm.type}, function (response) {
+                            var x = [];
+                            var cpu = [], iis = [], memory = [];
+
+                            $.each(response, function (index, d) {
+                                x.push(d.date);
+                                cpu.push(d.cpu);
+                                iis.push(d.iis);
+                                memory.push(d.memory);
+                            })
+
+                            // 填入数据
+                            cpuChart.setOption({
+                                xAxis: {
+                                    data: x
+                                },
+                                series: [{
+                                    data: cpu
+                                }]
+                            });
+                            iisChart.setOption({
+                                xAxis: {
+                                    data: x
+                                },
+                                series: [{
+                                    data: iis
+                                }]
+                            });
+                            memoryChart.setOption({
+                                xAxis: {
+                                    data: x
+                                },
+                                series: [{
+                                    data: memory
+                                }]
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+}
+<div class="container-fluid">
+    <div class="info-center">
+        <div class="page-header">
+            <div class="pull-left">
+                <h4>列表信息</h4>
+            </div>
+        </div>
+        <div class="search-box row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <span class="pull-left form-span">请选择监控IP:</span>
+                    <select class="form-control" v-model="machineIp">
+                        <option value="">-请选择服务器IP-</option>
+                        
+                        @foreach (var item in computerList)
+                        {
+                            <option value="@item.MachineIp">@item.MachineIp</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <span class="pull-left form-span">请选择监控日期:</span>
+                    <select class="form-control" v-model="type">
+                        <option value="">-请选择日期-</option>
+                        <option value="1" selected="selected">当天</option>
+                        <option value="2">本月</option>
+                    </select>
+                </div>
+                <div class="form-group btn-search">
+                    <button class="btn btn-primary" v-on:click="clickSearchCharts()"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+                </div>
+            </div>
+            
+        </div>
+        <div class="clearfix"></div>
+        <div class="table-margin">
+                
+                    <div id="cpuContainer" style="height:400px;"></div>
+                    <div id="iisContainer"  style="height:400px;"></div>
+                    <div id="memoryContainer" style="height:400px;"></div>
+              
+            </div>
+        </div>
+</div>

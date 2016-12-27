@@ -4,7 +4,7 @@
         <label class="col-sm-3 control-label">用户名：</label>
         <div class="col-sm-9">
             <input type="hidden" value="@(string.IsNullOrEmpty(Model.UserName) ? string.Empty : Model.Id.ToString())" id="id" name="id" />
-            <input type="text"  name="userName"  id="userName" value="@Model.UserName"  placeholder="请输入用户名" class="form-control">
+            <input type="text"  name="userName"  id="userName" @(!string.IsNullOrEmpty(Model.UserName) ? "disabled=disabled" : string.Empty) value="@Model.UserName"  placeholder="请输入用户名" class="form-control ignore">
         </div>
     </div>
     <div class="form-group">
@@ -16,15 +16,15 @@
     <div class="form-group">
         <label class="col-sm-3 control-label">密码：</label>
         <div class="col-sm-9">
-            <input type="text" placeholder="请输入密码" value="@Model.Password" id="password" name="password" class="form-control">
+            <input type="password" placeholder="请输入密码" value="@Model.Password"  id="password" name="password" class="form-control">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label">角色：</label>
         <div class="col-sm-9">
             <select class="form-control input-xlarge" id="role" name="role">
-                <option value="1">管理员</option>
-                <option value="2">开发人员</option="2">
+                <option value="1" @(Model.Role==1 ? "selected=\"selected\"" : "")>管理员</option>
+                <option value="2" @(Model.Role==2 ? "selected=\"selected\"" : "")>开发人员</option="2">
             </select>
         </div>
     </div>

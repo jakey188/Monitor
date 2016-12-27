@@ -10,29 +10,108 @@
     <meta charset="utf-8">
     <title>登录 - 监控中心</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="~/Statics/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/Statics/css/style.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" title="">
+    <link href="~/Statics/css/dialog/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" title="">
+    <link href="~/Statics/css/style.css" rel="stylesheet" type="text/css" title="" />
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-
+    <style>
+        body { padding-top: 40px; padding-bottom: 40px; background-color: #eee; }
+        .form-signin { max-width: 330px; padding: 15px; margin: 0 auto; margin-top:100px;  }
+        .form-signin .form-signin-heading,
+        .form-signin .checkbox { margin-bottom: 10px; }
+        .form-signin .checkbox { font-weight: normal; }
+        .form-signin .form-control { position: relative; height: auto; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; padding: 10px; font-size: 16px; }
+    </style>
 </head>
 <body>
-    <div id="login-page" class="container">
-            <form class="well" role="form">
-                <h2>登录</h2>
-                <div class="control-group">
-                    <input type="text" class="form-control" placeholder="请输入账号" required autofocus>
-                </div><div class="control-group">
-                    <input type="password" class="form-control" placeholder="请输入密码" required>
+    <div class="container">
+        <div>
+            <form class="form-signin" id="loginForm">
+                @*<h2 class="form-signin-heading">请登录</h2>*@
+                <div class="form-group">
+                    <label for="inputEmail" class="sr-only">用户名</label>
+                    <input type="text" name="userName" class="form-control" placeholder="请输入用户名" required autofocus>
                 </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"> 记住我
-                    </label>
+                <div class="form-group">
+                    <label for="inputPassword" class="sr-only">密 码</label>
+                    <input type="password" name="password" class="form-control" placeholder="请输入密码" required>
                 </div>
-                <button class="btn" type="submit">登 录</button>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="remember" value="true"> 记住？
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block" id="btnLogin" data-loading-text="提交中..." type="submit">登 录</button>
+                </div>
             </form>
+        </div>
     </div>
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-    <script src="~/Statics/js/bootstrap.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="~/Statics/js/jquery.validate.min.js"></script>
+    <script src="~/Statics/js/jquery.validate.bootstrap.js"></script>
+    <script src="~/Statics/js/dialog/js/bootstrap-dialog.min.js"></script>
+    <script src="~/Statics/js/app.js"></script>
+    <script>
+        $(function () {
+            var returnUrl = '@Html.Raw(ViewBag.ReturnUrl)';
+            $('body')
+                .on('click', '#btnLogin ', function () {
+                    var btn = $(this),
+                        form = $('#loginForm');
+
+                    form.validate({
+                        ignore: ":hidden",
+                        rules: {
+                            userName: {
+                                required: true
+                            }
+                            ,
+                            password: {
+                                required: true
+                            }
+                        },
+                        messages: {
+                            userName: {
+                                required: "请填写用户名."
+                            }
+                            ,
+                            password: {
+                                required: "请填写密码."
+                            }
+                        },
+                        submitHandler: function (form) {
+                            
+                            $.ajax({
+                                url: '@Url.Action("Signin","Login")',
+                                beforeSend: function () {
+                                    btn.button('loading')
+                                },
+                                type: 'post',
+                                dataType: 'json',
+                                data: $('#loginForm').serialize(),
+                                success: function (response) {
+                                    if (response.s == 10006) {
+                                        if (returnUrl.length == 0) {
+                                            location.href = '@Url.Action("Index","Home")';
+                                        } else {
+                                            location.href = returnUrl;
+                                        }
+                                    } else {
+                                        app.tips(response.msg);
+                                    }
+                                },
+                                complete: function () {
+                                    btn.button('reset');
+                                }
+                            })
+                        }
+                    });
+                })
+        });
+    </script>
 </body>
 </html>

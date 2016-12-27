@@ -24,7 +24,7 @@
                 url: '',
                 startDate: '',
                 endDate:'',
-                apiGetListUrl: '@Url.Content("~/")api/GetHttpWatchReportList',
+                apiGetListUrl: '@Url.Action("GetHttpWatchReportList","HttpWatch")',
                 dataList: []
             },
             ready: function () {
@@ -103,8 +103,8 @@
             </div>
         </div>
         <div class="clearfix"></div>
-        <div class="table-margin">
-            <table class="table table-bordered table-striped">
+        <div class="table-margin table-responsive">
+            <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
                         <th>

@@ -2,6 +2,8 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = " 性能监视器统计图";
+    var computerList = ViewBag.ComputerInfoList as List<ClusterComputerInfo>;
+    var defaultComputer = computerList.FirstOrDefault();
 }
 
 @section scriptSrc{
@@ -19,18 +21,20 @@
             var vue = new Vue({
                 el: '#app',
                 data: {
-                    machineIp: '',
-                    apiGetChartDataUrl: '@Url.Content("~/")api/GetPerformanceCounterSnapshotCharts',
+                    machineIp: '@(defaultComputer!=null ? defaultComputer.MachineIp : string.Empty)',
+                    apiGetChartDataUrl: '@Url.Action("GetSnapshotCharts","PerformanceCounter")',
                     dataList: []
                 },
                 ready: function () {
-
+                    this.clickSearchCharts(this.machineIp);
                 },
                 methods: {
                     clickSearchCharts: function (ip) {
                         var vm = this;
                         this.initChartOption();
-                        setInterval(function () { vm.getChartData() }, 1000);
+                        if (vm.machineIp.length > 0) {
+                            setInterval(function () { vm.getChartData() }, 1000);
+                        }
                     },
                     
                     initChartOption: function () {
@@ -43,20 +47,38 @@
                                 subtext: 'CPU【max】值统计图,采集单位【秒】'
                             },
                             xAxis: {
+                                name: '秒',
+                                type: 'category',
+                                boundaryGap: false,
                                 data: []
                             },
                             yAxis: {
-                                min: 0,
-                                max: 100
+                                type: 'value',
+                                max: 100,
+                                splitLine: {
+                                    show: false
+                                }
                             },
                             series: [{
                                 // 根据名字对应到相应的系列
                                 name: 'CPU使用率',
                                 smooth: true,
                                 symbol: 'none',
-                                stack: 'a',
+                                itemStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
                                 areaStyle: {
-                                    normal: {}
+                                    normal: {
+                                        color: "#39B7CE",
+                                        opacity: 0.8
+                                    }
                                 },
                                 type: 'line',
                                 data: []
@@ -69,6 +91,9 @@
                                 subtext: 'IIS请求数【max】值统计图,采集单位【秒】'
                             },
                             xAxis: {
+                                name: '秒',
+                                type: 'category',
+                                boundaryGap: false,
                                 data: []
                             },
                             yAxis: {
@@ -79,9 +104,21 @@
                                 name: 'IIS请求数',
                                 smooth: true,
                                 symbol: 'none',
-                                stack: 'a',
+                                itemStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
                                 areaStyle: {
-                                    normal: {}
+                                    normal: {
+                                        color: "#39B7CE",
+                                        opacity: 0.8
+                                    }
                                 },
                                 type: 'line',
                                 data: []
@@ -94,7 +131,9 @@
                                 subtext: '内存【max】值统计图,采集单位【秒】'
                             },
                             xAxis: {
-                                offset: 10,
+                                name: '秒',
+                                type: 'category',
+                                boundaryGap: false,
                                 data: []
                             },
                             yAxis: {
@@ -105,9 +144,21 @@
                                 name: '内存使用',
                                 smooth: true,
                                 symbol: 'none',
-                                stack: 'a',
+                                itemStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        color: "#39B7CE"
+                                    }
+                                },
                                 areaStyle: {
-                                    normal: {}
+                                    normal: {
+                                        color: "#39B7CE",
+                                        opacity: 0.8
+                                    }
                                 },
                                 type: 'line',
                                 data: []
@@ -169,12 +220,10 @@
         <div class="search-box row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <span class="pull-left form-span">请选择监控日期:</span>
+                    <span class="pull-left form-span">请选择监控IP:</span>
                     <select class="form-control" v-model="machineIp">
                         <option value="">-请选择服务器IP-</option>
-                        @{
-                            var computerList = ViewBag.ComputerInfoList as List<ClusterComputerInfo>;
-                        }
+                        
                         @foreach (var item in computerList)
                         {
                             <option value="@item.MachineIp">@item.MachineIp</option>
@@ -185,6 +234,7 @@
                     <button class="btn btn-primary" v-on:click="clickSearchCharts()"><span class="glyphicon glyphicon-search"></span> 搜索</button>
                 </div>
             </div>
+            
         </div>
         <div class="clearfix"></div>
         <div class="table-margin">

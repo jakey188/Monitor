@@ -9,7 +9,7 @@ namespace Monitor.Web.Controllers
     /// <summary>
     /// 首页
     /// </summary>
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         /// <summary>
         /// 首页

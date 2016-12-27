@@ -26,7 +26,7 @@
                     collectTypeValue: '',
                     startDate: '',
                     endDate: '',
-                    apiGetListUrl: '@Url.Content("~/")api/GetPerformanceCounterSnapshotList',
+                    apiGetListUrl: '@Url.Action("GetSnapshotList","PerformanceCounter")',
                     dataList: []
                 },
                 ready: function () {
@@ -131,8 +131,8 @@
         </div>
 
         <div class="clearfix"></div>
-        <div class="table-margin">
-            <table class="table table-bordered table-header">
+        <div class="table-margin table-responsive">
+            <table class="table table-bordered table-header table-hover">
                 <thead>
                     <tr>
                         <th>

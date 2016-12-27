@@ -2,12 +2,14 @@
 using System.Web.Mvc;
 using Monitor.Web.Response;
 using Monitor.Web.Core;
+using Monitor.Web.Core.Filter;
 
 namespace Monitor.Web.Controllers
 {
     /// <summary>
     /// 基础控制器
     /// </summary>
+    [LoginAuthorize]
     public class BaseController : Controller
     {
         /// <summary>

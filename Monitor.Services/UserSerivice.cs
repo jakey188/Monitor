@@ -54,6 +54,12 @@ namespace Monitor.Services
             return db.Where<User>(x => x.Id == objectId).FirstOrDefault();
         }
 
+        public User Get(string username,string password)
+        {
+            var db = new MongoDbContext();
+            return db.Where<User>(x => x.UserName == username && x.Password==password).FirstOrDefault();
+        }
+
         public List<User> GetUserList(string userName,int pageIndex,int pageSize,out int total)
         {
             var db = new MongoDbContext();
