@@ -6,9 +6,11 @@ using System.Web;
 using System.Web.Mvc;
 using Monitor.Models.Entites;
 using Monitor.Services;
+using Monitor.Web.Core.Filter;
 
 namespace Monitor.Web.Controllers
 {
+    
     public class UserController : BaseController
     {
         private readonly UserSerivice _userSerivice;
@@ -17,6 +19,7 @@ namespace Monitor.Web.Controllers
         {
             _userSerivice = new UserSerivice();
         }
+
         public ActionResult List()
         {
             return View();
@@ -38,15 +41,14 @@ namespace Monitor.Web.Controllers
             return Success(data,pageIndex,pageSize,total);
         }
 
-        [Route("~/api/user/delete")]
+        [AuthRole(EnmUserRole.管理员),Route("~/api/user/delete")]
         public JsonResult DeleteUser(string id)
         {
             _userSerivice.Delete(id);
             return Success();
         }
 
-
-        [Route("~/api/user/add"), HttpPost]
+        [AuthRole(EnmUserRole.管理员),Route("~/api/user/add"), HttpPost]
         public JsonResult Add(string id,string userName,string trueName,string role,string mobile,string email,string password)
         {
             if (!string.IsNullOrEmpty(id))

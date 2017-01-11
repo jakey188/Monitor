@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Monitor.Services;
@@ -76,7 +77,7 @@ namespace Monitor.Web.Controllers
             DateTime? start = string.IsNullOrEmpty(startDate) ? null : (DateTime?)DateTime.Parse(startDate);
             DateTime? end = string.IsNullOrEmpty(endDate) ? null : (DateTime?)DateTime.Parse(endDate);
 
-            var computerInfos = _clusterPerformanceCounterSnapshotService.ClusterPerformanceCounterSnapshot(ip,counterId,value,start,end,pageIndex,pageSize,out total);
+            var computerInfos = _clusterPerformanceCounterSnapshotService.ClusterPerformanceCounterSnapshotPage(ip,counterId,value,start,end,pageIndex,pageSize,out total);
             return Success(computerInfos,pageIndex,pageSize,total);
         }
 

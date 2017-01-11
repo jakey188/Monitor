@@ -19,6 +19,14 @@ namespace Monitor.Web.Core.Filter
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
+            bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute),inherit: true)
+    || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute),inherit: true);
+
+            if (skipAuthorization)
+            {
+                return;
+            }
+
             var user = UserContext.GetLoginInfo();
             string url = HttpContext.Current.Request.Url.ToString();
 

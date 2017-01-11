@@ -16,13 +16,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" title="">
-    <link href="~/Statics/css/dialog/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" title="">
-    <link href="~/Statics/css/style.css" rel="stylesheet" type="text/css" title="" />
-    <link href="~/Statics/css/default.css" rel="stylesheet" type="text/css" title="blue" />
-    <link href="~/Statics/css/green.css" rel="stylesheet" type="text/css" title="green" disabled="disabled" />
-    <link href="~/Statics/css/orange.css" rel="stylesheet" type="text/css" title="orange" disabled="disabled" />
+    <title>@ViewBag.Title - 监控中心</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Statics/css/dialog/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Statics/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Statics/css/default.css" rel="stylesheet" type="text/css" skin="true" theme="blue" />
+    <link href="~/Statics/css/green.css"   rel="stylesheet" type="text/css" skin="true" theme="green" disabled="disabled" />
+    <link href="~/Statics/css/orange.css"  rel="stylesheet" type="text/css" skin="true" theme="orange" disabled="disabled" />
     <link href="~/Statics/css/templatecss.css" rel="stylesheet" title="" type="text/css" />
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
@@ -198,19 +198,19 @@
                     <ul class="navContent" style="display:block">
                         <li class="@(LeftNemu("ComputerList","Cluster") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />列表信息</div>
-                            <a href="@Url.Action("ComputerList","Cluster")"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">列表信息</span></a>
+                            <a href="@Url.Action("ComputerList","Cluster")"><span class="sublist-icon glyphicon glyphicon-list-alt"></span><span class="sub-title">列表信息</span></a>
                         </li>
                         <li class="@(LeftNemu("SnapshotList","PerformanceCounter") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />性能记录</div>
-                            <a href="@Url.Action("SnapshotList","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-envelope"></span><span class="sub-title">性能记录</span></a>
+                            <a href="@Url.Action("SnapshotList","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-th"></span><span class="sub-title">性能记录</span></a>
                         </li>
                         <li class="@(LeftNemu("ChartsSnapshotReport","PerformanceCounter") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />性能快照图</div>
-                            <a href="@Url.Action("ChartsSnapshotReport","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-bullhorn"></span><span class="sub-title">性能快照图</span></a>
+                            <a href="@Url.Action("ChartsSnapshotReport","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-stats"></span><span class="sub-title">性能快照图</span></a>
                         </li>
                         <li class="@(LeftNemu("Charts","PerformanceCounter") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />性能实时图</div>
-                            <a href="@Url.Action("Charts","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-bullhorn"></span><span class="sub-title">性能实时图</span></a>
+                            <a href="@Url.Action("Charts","PerformanceCounter")"><span class="sublist-icon glyphicon glyphicon-picture"></span><span class="sub-title">性能实时图</span></a>
                         </li>
                     </ul>
                 </div>
@@ -219,7 +219,7 @@
                     <ul class="navContent" style="display:block">
                         <li class="@(LeftNemu("List","HttpWatch") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />耗时记录</div>
-                            <a href="@Url.Action("List","HttpWatch")"><span class="sublist-icon glyphicon glyphicon-credit-card"></span><span class="sub-title">耗时记录</span></a>
+                            <a href="@Url.Action("List","HttpWatch")"><span class="sublist-icon glyphicon glyphicon-th-list"></span><span class="sub-title">耗时记录</span></a>
                         </li>
                         <li class="@(LeftNemu("ReportList","HttpWatch") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />耗时统计</div>
@@ -258,15 +258,15 @@
     <script type="text/javascript">
         $(function () {
             $(".dropdown .changecolor li").click(function () {
-                var style = $(this).attr("id");
-                $("link[title!='']").attr("disabled", "disabled");
-                $("link[title='" + style + "']").removeAttr("disabled");
-                $.cookie('mystyle', style, { expires: 7 });
+                var theme = $(this).attr("id");
+                $("link[skin='true']").attr("disabled", "disabled");
+                $("link[theme='" + theme + "']").removeAttr("disabled");
+                $.cookie('theme', theme, { expires: 7,path:"/" });
             })
-            var cookie_style = $.cookie("mystyle");
-            if (cookie_style != null) {
-                $("link[title!='']").attr("disabled", "disabled");
-                $("link[title='" + cookie_style + "']").removeAttr("disabled");
+            var theme = $.cookie("theme");
+            if (theme != null) {
+                $("link[skin='true']").attr("disabled", "disabled");
+                $("link[theme='" + theme + "']").removeAttr("disabled");
             }
 
             $(".subNav").click(function () {

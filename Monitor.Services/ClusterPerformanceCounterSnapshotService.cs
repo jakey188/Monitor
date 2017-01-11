@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver.Linq;
 using Monitor.Core;
 using Monitor.Data;
 using Monitor.Models;
@@ -25,7 +30,7 @@ namespace Monitor.Services
         public List<ClusterPerformanceCounterSnapshot> ClusterPerformanceCounterSnapshot(string ip,int counterId,int value,DateTime? start,DateTime? end,int pageIndex,int pageSize,out int total)
         {
             var db = new MongoDbContext();
-            var query = db.Where<ClusterPerformanceCounterSnapshot>();
+            var query = (IQueryable<ClusterPerformanceCounterSnapshot>)db.GetCollection<ClusterPerformanceCounterSnapshot>().AsQueryable();
             if (!string.IsNullOrEmpty(ip))
             {
                 query = query.Where(x => x.MachineIP == ip);
@@ -49,7 +54,49 @@ namespace Monitor.Services
             {
                 query = query.Where(x => x.CreateTime < end.Value && x.CreateTime > start.Value);
             }
-            return query.OrderByDescending(x => x.Id).ToPageList(pageIndex,pageSize,out total);
+            
+            total = query.Count();
+
+            return query.OrderByDescending(x => x.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+        }
+
+        public List<ClusterPerformanceCounterSnapshot> ClusterPerformanceCounterSnapshotPage(string ip,int counterId,int value,DateTime? start,DateTime? end,int pageIndex,int pageSize,out int total)
+        {
+            var db = new MongoDbContext();
+
+            var collection = db.GetCollection<ClusterPerformanceCounterSnapshot>();
+
+            var builder = Builders<ClusterPerformanceCounterSnapshot>.Filter;
+
+            var filter = builder.Empty;
+
+            if (!string.IsNullOrEmpty(ip))
+            {
+                filter = filter & builder.Eq(x => x.MachineIP,ip);
+            }
+            if (counterId > 0 && value > 0)
+            {
+                switch (counterId)
+                {
+                    case (int)EnmCounter.CPU:
+                        filter = filter & builder.Gte(x => x.CPU,value);
+                        break;
+                    case (int)EnmCounter.IIS请求:
+                        filter = filter & builder.Gte(x => x.IIS,value);
+                        break;
+                    case (int)EnmCounter.内存:
+                        filter = filter & builder.Gte(x => x.Memory,value);
+                        break;
+                }
+            }
+            if (start.HasValue && end.HasValue)
+            {
+                filter = filter & builder.Gt(x => x.CreateTime,start.Value);
+                filter = filter & builder.Lt(x => x.CreateTime,end.Value);
+            }
+            total = (int)collection.Count(filter);
+            
+            return collection.Find(filter).SortByDescending(x => x.Id).ToPageList(pageIndex,pageSize);
         }
 
         public List<ClusterPerformanceCounterSnapshot> ClusterPerformanceCounterSnapshot(string ip,DateTime? startTime,DateTime? endTime,int top = 20)
@@ -76,6 +123,7 @@ namespace Monitor.Services
             var db = new MongoDbContext();
             var query = db.Where<ClusterPerformanceCounterSnapshot>(x => x.MachineIP == ip);
 
+            var collection = db.GetCollection<ClusterPerformanceCounterSnapshot>();
             var year = DateTime.Now.Year;
             var month = DateTime.Now.Month;
             var day = DateTime.Now.Day;
@@ -109,10 +157,10 @@ namespace Monitor.Services
                     CPU = x.Average(m => m.CPU),
                     Memory = x.Average(m => m.Memory),
                 });
+
+                var sql = q1.ToString();
                 return q1.ToList();
             }
         }
     }
-
-   
 }

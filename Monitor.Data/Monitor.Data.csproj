@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="MongoDbConfig.cs" />
     <Compile Include="MongoDbContext.cs" />
+    <Compile Include="MongodbExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

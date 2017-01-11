@@ -165,7 +165,7 @@
     <Compile Include="Core\Extensions\ContollerExtensions.cs" />
     <Compile Include="Core\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Core\Extensions\JsonExtension.cs" />
-    <Compile Include="Core\Filter\AuthorizeAttribute.cs" />
+    <Compile Include="Core\Filter\AuthRoleAttribute.cs" />
     <Compile Include="Core\Filter\LoginAuthorizeAttribute.cs" />
     <Compile Include="Core\JsonNetResult.cs" />
     <Compile Include="Core\Response\AjaxResponse.cs" />
