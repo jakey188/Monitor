@@ -228,6 +228,24 @@
                     </ul>
                 </div>
                 <div class="sBox">
+                    <div class="subNav sublist-down"><span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">任务调度</span></div>
+                    <ul class="navContent" style="display:block">
+                        <li class="@(LeftNemu("TaskList","Task") ? "active" : "")">
+                            <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />任务管理</div>
+                            <a href="@Url.Action("TaskList","Task")"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">任务管理</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sBox">
+                    <div class="subNav sublist-down"><span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">日志</span></div>
+                    <ul class="navContent" style="display:block">
+                        <li class="@(LeftNemu("Index","Logs") ? "active" : "")">
+                            <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />系统日志</div>
+                            <a href="@Url.Action("Index","Logs")"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">系统日志</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sBox">
                     <div class="subNav sublist-down"><span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">账户</span></div>
                     <ul class="navContent" style="display:block">
                         <li class="@(LeftNemu("Index","Home") ? "active" : "")">

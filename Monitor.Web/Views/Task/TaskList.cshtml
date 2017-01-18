@@ -7,71 +7,57 @@
         var userInfoDialog,vue;
         $(function () {
             $('body')
+                .on('click', 'input[name=rdoTypes]', function () {
+                    var value = $(this).val();
+                    if (parseInt(value) == 1) {
+                        $('#remoteUrlDiv').hide().find('input').addClass('ignore');
+                    } else {
+                        $('#remoteUrlDiv').show().find('input').removeClass('ignore');
+                    }
+                })
                 .on('click', '#userInfoSubmit', function () {
                     var btn = $(this),
-                        form = $('#createUserInfoForm');
+                        form = $('#createTaskForm');
 
                     form.validate({
                         ignore: ":hidden",
                         rules: {
-                            userName: {
+                            taskName: {
                                 required: true
                             },
-                            trueName: {
+                            remoteUrl: {
                                 required: true
-                            }
-                            ,
-                            password: {
+                            },
+                            cronExpressionString: {
                                 required: true
-                            }
-                            ,
-                            role: {
+                            },
+                            cronRemark: {
                                 required: true
-                            }
-                            ,
-                            mobile: {
-                                required: true
-                            }
-                            ,
-                            email: {
-                                required: true,
-                                email: true
                             }
                         },
                         messages: {
-                            userName: {
-                                required: "请填写用户名."
+                            taskName: {
+                                required: "请输入任务名."
                             },
-                            trueName: {
-                                required: "请填写真实姓名."
-                            }
-                            ,
-                            password: {
-                                required: "请填写密码."
-                            }
-                            ,
-                            role: {
-                                required: "请选择角色."
-                            }
-                            ,
-                            mobile: {
-                                required: "请填写手机号码."
-                            }
-                            ,
-                            email: {
-                                required: "请填写邮箱.",
-                                email: "邮箱格式不正确"
+                            remoteUrl: {
+                                required: "任务执行api."
+                            },
+                            cronExpressionString: {
+                                required: "请填写Cron表达式."
+                            },
+                            cronRemark: {
+                                required: "请表达式说明."
                             }
                         },
                         submitHandler: function (form) {
                             $.ajax({
-                                url: '@Url.Action("Add","User")',
+                                url: '@Url.Action("AddTask","Task")',
                                 beforeSend: function () {
                                     btn.button('loading')
                                 },
                                 type: 'post',
                                 dataType: 'json',
-                                data: $('#createUserInfoForm').serialize(),
+                                data: $('#createTaskForm').serialize(),
                                 success: function (response) {
                                     if (response.s == 10006) {
                                         app.tips('操作成功', function () {
@@ -95,7 +81,7 @@
                 data: {
                     total: 0,
                     pageSize: 10,
-                    userName:'',
+                    taskName:'',
                     pageOptions: {
                         currentPage: 1,
                         bootstrapMajorVersion: 1,
@@ -106,8 +92,8 @@
                             vue.getList();
                         }
                     },
-                    apiGetListUrl: '@Url.Action("GetUserList","User")',
-                    apiDeleteUrl: '@Url.Action("DeleteUser","User")',
+                    apiGetListUrl: '@Url.Action("GetTaskList","Task")',
+                    apiDeleteUrl: '@Url.Action("DeleteTask","Task")',
                     dataList: []
                 },
                 ready: function () {
@@ -118,16 +104,16 @@
                         var vm = this;
                         id = id || '';
                         userInfoDialog = app.dialog({
-                            title: '用户信息',
+                            title: '任务信息',
                             nl2br: false,
-                            message: $('<div></div>').load('@Url.Action("UserInfo","User")?id=' + id)
+                            message: $('<div></div>').load('@Url.Action("TaskDetails","Task")?taskId=' + id)
                         });
                     },
-                    del: function (id) {
+                    del: function (taskId) {
                         var vm = this;
-                        app.confirm("确认要删除该用户吗？", function (result) {
+                        app.confirm("确认要删除该任务吗？", function (result) {
                             if (result) {
-                                $.get('@Url.Action("DeleteUser","User")?id=' + id, function (response) {
+                                $.get('@Url.Action("DeleteTask","Task")?taskId=' + taskId, function (response) {
                                     if (response.s == 10006) {
                                         app.tips("删除成功", function () {
                                             vm.getList();
@@ -139,6 +125,27 @@
                             }
                         })
                     },
+                    updateStatus: function (taskId,status) {
+                        var vm = this;
+                        var msg = '确认要停止该任务吗';
+                        if (parseInt(status) == 1) {
+                            msg = "确认要开启该任务吗?"
+                        }
+                        app.confirm(msg, function (result) {
+                            if (result) {
+                                $.get('@Url.Action("UpdateTaskStatus","Task")?taskId=' + taskId + "&status="+status, function (response) {
+                                    if (response.s == 10006) {
+                                        app.tips("操作成功", function () {
+                                            vm.getList();
+                                        })
+                                    } else {
+                                        app.tips(response.msg);
+                                    }
+                                });
+                            }
+                        })
+                    }
+                    ,
                     edit: function (id) {
                         this.openUserDialog(id);
                     },
@@ -157,7 +164,7 @@
                             data: {
                                 pageIndex: vm.pageOptions.currentPage,
                                 pageSize: vm.pageSize,
-                                userName:vm.userName
+                                taskName: vm.taskName
                             },
                             success: function (response) {
                                 if (response.s === 10006) {
@@ -198,7 +205,7 @@
             <div class="col-md-8">
 
                 <div class="form-group">
-                    <input class="form-control" type="text" v-model="userName" placeholder="用户名" />
+                    <input class="form-control" type="text" v-model="taskName" placeholder="任务名" />
                 </div>
 
                 <div class="form-group btn-search">
@@ -209,17 +216,17 @@
                 <div class="btn-group pull-right" role="group" aria-label="...">
                     <button type="button" v-on:click="openUserDialog()" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 新增</button>
                     @*<div class="btn-group" role="group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-edit"></span> 审核
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">通过</a></li>
-                            <li><a href="#">不通过</a></li>
-                        </ul>
-                    </div>
-                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 编辑</button>
-                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> 删除</button>*@
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-edit"></span> 审核
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">通过</a></li>
+                                <li><a href="#">不通过</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 编辑</button>
+                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> 删除</button>*@
                 </div>
             </div>
         </div>
@@ -229,19 +236,28 @@
                 <thead>
                     <tr>
                         <th>
-                            用户名
+                            任务TaskId
                         </th>
                         <th>
-                            真实姓名
+                            任务名
                         </th>
                         <th>
-                            角色
+                            运行频率
                         </th>
                         <th>
-                            手机号码
+                            任务状态
                         </th>
                         <th>
-                            邮箱
+                            最近运行时间
+                        </th>
+                        <th>
+                            下次运行时间
+                        </th>
+                        <th>
+                            创建时间
+                        </th>
+                        <th>
+                            说明
                         </th>
                         <th>
                             操作
@@ -251,23 +267,35 @@
                 <tbody>
                     <tr v-for="item in dataList">
                         <td>
-                            {{item.userName}}
+                            {{item.taskId}}
                         </td>
                         <td>
-                            {{item.trueName}}
+                            {{item.taskName}}
                         </td>
                         <td>
-                            {{item.role==1 ? "管理员" : "开发人员"}}
+                            {{item.cronRemark}}
                         </td>
                         <td>
-                            {{item.mobile}}
+                            {{item.status == 1 ? "运行中" : "已停止"}}
                         </td>
                         <td>
-                            {{item.email}}
+                            {{item.recentRunTime}}
                         </td>
                         <td>
-                            <button type="button" v-on:click="del(item.id)" class="btn btn-danger  btn-xs"><span class="glyphicon glyphicon-remove"></span>删除</button>
-                            <button type="button" v-on:click="edit(item.id)" class="btn btn-info  btn-xs"><span class="glyphicon glyphicon-pencil"></span>编辑</button>
+                            {{item.nextFireTime}}
+                        </td>
+                        <td>
+                            {{item.createdTime}}
+                        </td>
+                        <td>
+                            {{item.remark}}
+                        </td>
+                        
+                        <td>
+                            <button type="button" v-on:click="del(item.taskId)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>删除</button>
+                            <button type="button" v-on:click="edit(item.taskId)" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-pencil"></span>编辑</button>
+                            <button type="button" v-on:click="updateStatus(item.taskId,1)" class="btn btn-success  btn-xs"><span class="glyphicon glyphicon-circle"></span>开始</button>
+                            <button type="button" v-on:click="updateStatus(item.taskId,0)" class="btn btn-default  btn-xs"><span class="glyphicon glyphicon-off"></span>停止</button>
                         </td>
                     </tr>
                 </tbody>

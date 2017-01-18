@@ -43,6 +43,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Examda.AspNet.Data.Mongo.Driver.NET20, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Examda.AspNet.Data.Mongo.Driver.NET20.1.0.3\lib\Examda.AspNet.Data.Mongo.Driver.NET20.dll</HintPath>
       <Private>True</Private>
@@ -70,6 +78,10 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.4.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.4.1\lib\net40\Quartz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
@@ -155,18 +167,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\ClusterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HttpWatchController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\PerformanceCounterController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Core\Extensions\ContollerExtensions.cs" />
     <Compile Include="Core\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Core\Extensions\JsonExtension.cs" />
     <Compile Include="Core\Filter\AuthRoleAttribute.cs" />
+    <Compile Include="Core\Filter\HandleErrorLogAttribute.cs" />
     <Compile Include="Core\Filter\LoginAuthorizeAttribute.cs" />
+    <Compile Include="Core\JobScheduler.cs" />
+    <Compile Include="Core\Jobs\EnmJob.cs" />
+    <Compile Include="Core\Jobs\PerformanceCounterJob.cs" />
+    <Compile Include="Core\Jobs\TestJob.cs" />
     <Compile Include="Core\JsonNetResult.cs" />
     <Compile Include="Core\Response\AjaxResponse.cs" />
     <Compile Include="Core\Response\CodeStruct.cs" />
@@ -180,7 +199,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Cluster\ComputerList.cshtml" />
@@ -194,6 +215,8 @@
     <Content Include="Statics\js\dialog\less\bootstrap-dialog.less" />
     <Content Include="Statics\js\My97DatePicker\skin\twoer.zip" />
     <Content Include="Views\PerformanceCounter\ChartsSnapshotReport.cshtml" />
+    <Content Include="Views\Task\TaskList.cshtml" />
+    <Content Include="Views\Task\_TaskDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -225,6 +248,10 @@
     <ProjectReference Include="..\Monitor.Services\Monitor.Services.csproj">
       <Project>{3394036c-cbf9-46b1-aef4-39e6c1c60b28}</Project>
       <Name>Monitor.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Monitor.Tasks\Monitor.Tasks.csproj">
+      <Project>{993bcaef-ec09-409d-8ae0-0067aad910cd}</Project>
+      <Name>Monitor.Tasks</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

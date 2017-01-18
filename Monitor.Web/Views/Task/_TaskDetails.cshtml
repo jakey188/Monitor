@@ -1,0 +1,80 @@
+﻿@model Monitor.Models.Entites.Tasks
+@{
+    var typesSystem = (int)Monitor.Models.Entites.EnmTaskTypes.System;
+    var typesOutside = (int)Monitor.Models.Entites.EnmTaskTypes.Outside;
+    var statusRun = (int)Monitor.Models.Entites.EnmTaskStatus.Run;
+    var statusStop = (int)Monitor.Models.Entites.EnmTaskStatus.Stop;
+}
+<script>
+
+    $(function () {
+        var value = @(Model.Types);
+        var types = @(typesSystem);
+        if(types==value){
+            $('#remoteUrlDiv').hide().find('input').addClass('ignore');
+        }
+    });
+</script>
+<form class="form-horizontal" id="createTaskForm" action="javascript:void(0)">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">任务名称：</label>
+        <div class="col-sm-9">
+            <input type="hidden" value="@(string.IsNullOrEmpty(Model.TaskName) ? "" : Model.TaskId.ToString())" id="taskId" name="taskId" />
+            <input type="text" name="taskName" id="taskName"  value="@Model.TaskName" placeholder="请输入任务名" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">任务参数：</label>
+        <div class="col-sm-9">
+            <input type="text" placeholder="任务参数" value="@Model.TaskParam" id="taskParam" name="taskParam" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">任务属性：</label>
+        <div class="col-sm-9">
+            <label class="radio-inline">
+                <input type="radio" name="rdoTypes"  @(Model.Types== typesSystem ? " checked=\"checked\"" : "") value="@(typesSystem)"> 系统任务
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="rdoTypes"  @(Model.Types == typesOutside ? " checked=\"checked\"" : "") value="@(typesOutside)"> 外部任务
+            </label>
+        </div>
+    </div>
+    <div class="form-group" id="remoteUrlDiv">
+        <label class="col-sm-3 control-label">任务执行api：</label>
+        <div class="col-sm-9">
+            <input type="text" placeholder="任务执行api" value="@Model.RemoteUrl" id="remoteUrl" name="remoteUrl" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Cron表达式：</label>
+        <div class="col-sm-9">
+            <input type="text" placeholder="Cron表达式" value="@Model.CronExpressionString" id="cronExpressionString" name="cronExpressionString" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">表达式说明：</label>
+        <div class="col-sm-9">
+            <input type="text" placeholder="表达式说明" value="@Model.CronRemark" id="cronRemark" name="cronRemark" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">任务状态：</label>
+        <div class="col-sm-9">
+                <label class="radio-inline">
+                    <input type="radio" name="rdoStatus" v-on:click="changeTaskTypes(‘’‘@statusRun)" @(Model.Status==statusRun ? " checked=\"checked\"" : "")  value="@(statusRun)"> 运行
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="rdoStatus" v-on:click="changeTaskTypes(@statusStop)" @(Model.Status== statusStop ? " checked=\"checked\"" : "") value="@(statusStop)"> 停止
+                </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label " for="input01"></label>
+        <div class="col-sm-9">
+            <button type="submit" id="userInfoSubmit" data-loading-text="提交中..." class="btn btn-primary">
+                提交
+            </button>
+        </div>
+    </div>
+</form>

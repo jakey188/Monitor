@@ -50,7 +50,8 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 .sBox .sublist-down{ background-color:#22282e;}
 .sBox .sublist-up{ background-color:#37424f;}
 .sBox .sublist-up ul{ display:none;}
-.sBox .sublist-title{ cursor:pointer; font-size: 12px;}
+.sBox .sub-title{font-size:12px;}
+.sBox .sublist-title{ cursor:pointer; font-size: 16px;}
 .sBox .subNav:hover,.sBox ul li:hover{ background-color:#42515f;}
 .sBox span{ line-height:36px;}
 .sBox ul li .showtitle{ text-align:center; line-height:40px; position:absolute; z-index:100; background-color:#545f71; left:55px; padding:0px 10px 0px 10px; color:#FFF; min-width:100px; display:none;}

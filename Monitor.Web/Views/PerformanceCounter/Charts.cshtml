@@ -41,6 +41,9 @@
 
                         // 显示标题，图例和空的坐标轴
                         cpuChart.setOption({
+                            tooltip: {
+                                trigger: 'axis'
+                            },
                             title: {
                                 left: 'center',
                                 text: 'CPU使用率',
@@ -85,6 +88,9 @@
                             }]
                         });
                         iisChart.setOption({
+                            tooltip: {
+                                trigger: 'axis'
+                            },
                             title: {
                                 left: 'center',
                                 text: 'IIS请求数',
@@ -125,6 +131,9 @@
                             }]
                         });
                         memoryChart.setOption({
+                            tooltip: {
+                                trigger: 'axis'
+                            },
                             title: {
                                 left: 'center',
                                 text: '内存使用',

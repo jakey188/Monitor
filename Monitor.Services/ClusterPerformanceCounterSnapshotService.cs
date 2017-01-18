@@ -124,14 +124,12 @@ namespace Monitor.Services
             var query = db.Where<ClusterPerformanceCounterSnapshot>(x => x.MachineIP == ip);
 
             var collection = db.GetCollection<ClusterPerformanceCounterSnapshot>();
-            var year = DateTime.Now.Year;
-            var month = DateTime.Now.Month;
-            var day = DateTime.Now.Day;
+            var date = DateTime.Now;
 
             if (dateType == 1)//按天
             {
-                var start = new DateTime(year,month,day,0,0,0);
-                var end = new DateTime(year,month,day,23,59,59);
+                var start = new DateTime(date.Year,date.Month,date.Day,0,0,0);
+                var end = new DateTime(date.Year,date.Month,date.Day,23,59,59);
                 query = query.Where(x => x.CreateTime < end && x.CreateTime > start);
                 var q1 = query.GroupBy(x => x.CreateTime.Hour).Select(x => new PerformanceCounterSnapshotDto
                 {
@@ -144,9 +142,9 @@ namespace Monitor.Services
             }
             else
             {
-                var start = new DateTime(year,month,1,0,0,0);
+                var start = new DateTime(date.Year,date.Month,1,0,0,0);
 
-                var end = new DateTime(year,month,start.AddMonths(1).AddDays(-1).Day,23,59,59);
+                var end = new DateTime(date.Year,date.Month,start.AddMonths(1).AddDays(-1).Day,23,59,59);
 
                 query = query.Where(x => x.CreateTime < end && x.CreateTime > start);
 
