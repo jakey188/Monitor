@@ -120,7 +120,7 @@ namespace Monitor.Services
             var db = new MongoDbContext();
             var query = db.Where<Tasks>();
             if (!string.IsNullOrEmpty(taskName))
-                query = query.Where(x => x.TaskName == taskName);
+                query = query.Where(x => x.TaskName.Contains(taskName));
             return query.OrderByDescending(x => x.Id).ToPageList(pageIndex,pageSize,out total);
         }
     }

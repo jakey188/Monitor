@@ -23,8 +23,19 @@ namespace Monitor.Tasks.Quartzs
         /// <param name="model"></param>
         /// <param name="action">edit为修改</param>
         /// <returns></returns>
-        public bool AddOrEditTask(Models.Entites.Tasks model,string action="")
+        public OperationResult AddOrEditTask(Models.Entites.Tasks model, string action = "")
         {
+            var result = new OperationResult(OperationResultType.Success);
+
+            if (model.Status != (int) EnmTaskStatus.Run) return result;
+
+            var jobResult = QuartzManager.ScheduleJob(model, true);
+
+            if (jobResult.ResultType != OperationResultType.Success)
+            {
+                result.Message = jobResult.Message;
+                return result;
+            }
             if (action == "edit")
             {
                 _taskServices.Update(model);
@@ -33,48 +44,41 @@ namespace Monitor.Tasks.Quartzs
             {
                 _taskServices.AddTask(model);
             }
-            if (model.Status == (int)EnmTaskStatus.Run)
-            {
-                QuartzManager.ScheduleJob(model,true);
-            }
-            return true;
+
+            return result;
         }
 
         /// <summary>
         /// 删除指定id任务
         /// </summary>
-        /// <param name="TaskID">任务id</param>
-        public void DeleteById(string taskId)
+        /// <param name="taskId">任务id</param>
+        public OperationResult DeleteById(string taskId)
         {
-            QuartzManager.DeleteJob(taskId);
+            var result = QuartzManager.DeleteJob(taskId);
+            if (result.ResultType == OperationResultType.Success)
+                _taskServices.Delete(taskId);
 
-            _taskServices.Delete(taskId);
+            return result;
         }
 
         /// <summary>
         /// 更新任务运行状态
         /// </summary>
-        /// <param name="TaskID">任务id</param>
-        /// <param name="Status">任务状态</param>
-        public void UpdateTaskStatus(string taskId,EnmTaskStatus status)
+        /// <param name="taskId">任务id</param>
+        /// <param name="status">任务状态</param>
+        public OperationResult UpdateTaskStatus(string taskId, EnmTaskStatus status)
         {
-            if (status == EnmTaskStatus.Run)
-            {
-                QuartzManager.ResumeJob(taskId);
-            }
-            else
-            {
-                QuartzManager.PauseJob(taskId);
-            }
-
-            _taskServices.UpdateTaskStatus(taskId,status);
+            var result = status == EnmTaskStatus.Run ? QuartzManager.ResumeJob(taskId) : QuartzManager.PauseJob(taskId);
+            if (result.ResultType == OperationResultType.Success)
+                _taskServices.UpdateTaskStatus(taskId, status);
+            return result;
         }
 
         /// <summary>
         /// 更新任务下次运行时间
         /// </summary>
-        /// <param name="TaskID">任务id</param>
-        /// <param name="NextFireTime">下次运行时间</param>
+        /// <param name="taskId">任务id</param>
+        /// <param name="nextFireTime">下次运行时间</param>
         public void UpdateNextFireTime(string taskId,DateTime nextFireTime)
         {
             _taskServices.UpdateNextFireTime(taskId,nextFireTime);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Monitor.Core;
 using Monitor.Models.Entites;
 using Monitor.Services;
 using Monitor.Tasks.Quartzs;
@@ -24,9 +25,14 @@ namespace Monitor.Web.Controllers
             return View();
         }
 
+        public ActionResult ExpressionBuilder()
+        {
+            return PartialView("_CronExpressionBuilder");
+        }
+
         public ActionResult TaskDetails(string taskId)
         {
-            var task = new Monitor.Models.Entites.Tasks();
+            var task = new Models.Entites.Tasks();
             if (!string.IsNullOrEmpty(taskId))
                 task = _taskSerivice.GetTaskDetail(taskId);
             return PartialView("_TaskDetails",task);
@@ -60,10 +66,13 @@ namespace Monitor.Web.Controllers
         /// <param name="rdoStatus">任务状态</param>
         /// <returns></returns>
         [Route("~/api/task/add"), HttpPost]
-        public JsonResult AddTask(string taskId,string taskName,string taskParam,int rdoTypes,string remoteUrl,string cronExpressionString,string cronRemark,int rdoStatus)
+        public JsonResult AddTask(string taskId, string taskName, string taskParam, int rdoTypes, string remoteUrl,
+            string cronExpressionString, string cronRemark, int rdoStatus)
         {
-            if (QuartzManager.ValidExpression(cronExpressionString))
+            if (!QuartzManager.ValidExpression(cronExpressionString))
                 return Fail("Quartz Cron 表达式错误");
+
+            OperationResult result;
 
             if (!string.IsNullOrEmpty(taskId))
             {
@@ -79,25 +88,28 @@ namespace Monitor.Web.Controllers
                     task.Status = rdoStatus;
                     task.ModifyTime = DateTime.Now;
                 }
-                TaskManager.Instance.AddOrEditTask(task,"edit");
+                result = TaskManager.Instance.AddOrEditTask(task, "edit");
             }
             else
             {
+                var task = new Models.Entites.Tasks
+                {
+                    TaskId = Guid.NewGuid(),
+                    TaskName = taskName,
+                    TaskParam = taskParam,
+                    Types = rdoTypes,
+                    RemoteUrl = remoteUrl,
+                    CronExpressionString = cronExpressionString,
+                    CronRemark = cronRemark,
+                    Status = rdoStatus,
+                    ModifyTime = DateTime.Now
+                };
 
-                var task = new Monitor.Models.Entites.Tasks();
-                task.TaskId = Guid.NewGuid();
-                task.TaskName = taskName;
-                task.TaskParam = taskParam;
-                task.Types = rdoTypes;
-                task.RemoteUrl = remoteUrl;
-                task.CronExpressionString = cronExpressionString;
-                task.CronRemark = cronRemark;
-                task.Status = rdoStatus;
-                task.ModifyTime = DateTime.Now;
-
-                TaskManager.Instance.AddOrEditTask(task);
+                result = TaskManager.Instance.AddOrEditTask(task);
             }
-            return Success();
+            return result.ResultType != OperationResultType.Success
+                ? Fail(result.Message)
+                : Success(string.IsNullOrEmpty(result.Message) ? "操作成功" : result.Message);
         }
 
         /// <summary>
@@ -109,8 +121,9 @@ namespace Monitor.Web.Controllers
         [Route("~/api/task/update/status")]
         public ActionResult UpdateTaskStatus(string taskId,int status)
         {
-            TaskManager.Instance.UpdateTaskStatus(taskId,(EnmTaskStatus)status);
-
+            var result = TaskManager.Instance.UpdateTaskStatus(taskId,(EnmTaskStatus)status);
+            if (result.ResultType != OperationResultType.Success)
+                return Fail(result.Message);
             return Success();
         }
 
@@ -122,8 +135,9 @@ namespace Monitor.Web.Controllers
         [Route("~/api/task/delete")]
         public ActionResult DeleteTask(string taskId)
         {
-            TaskManager.Instance.DeleteById(taskId);
-
+            var result = TaskManager.Instance.DeleteById(taskId);
+            if (result.ResultType != OperationResultType.Success)
+                return Fail(result.Message);
             return Success();
         }
     }

@@ -130,6 +130,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="QuartzCron\Cron\cron.js" />
+    <Content Include="QuartzCron\Cron\icon.css" />
+    <Content Include="QuartzCron\Cron\jquery-1.6.2.min.js" />
+    <Content Include="QuartzCron\Cron\jquery.easyui.min.js" />
+    <Content Include="QuartzCron\Cron\themes\bootstrap\easyui.css" />
+    <Content Include="QuartzCron\Cron\themes\bootstrap\easyui.min.css" />
+    <Content Include="QuartzCron\Cron\themes\bootstrap\images\panel_tools.png" />
+    <Content Include="QuartzCron\Cron\themes\bootstrap\images\spinner_arrows.png" />
+    <Content Include="QuartzCron\Cron\themes\bootstrap\images\tabs_icons.png" />
+    <Content Include="QuartzCron\Cron\themes\icon.css" />
+    <Content Include="QuartzCron\index.htm" />
     <Content Include="Statics\css\default.css" />
     <Content Include="Statics\css\green.css" />
     <Content Include="Statics\css\orange.css" />
@@ -195,6 +206,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="QuartzCron\CalcRunTime.ashx.cs">
+      <DependentUpon>CalcRunTime.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +231,8 @@
     <Content Include="Views\PerformanceCounter\ChartsSnapshotReport.cshtml" />
     <Content Include="Views\Task\TaskList.cshtml" />
     <Content Include="Views\Task\_TaskDetails.cshtml" />
+    <Content Include="Views\Task\_CronExpressionBuilder.cshtml" />
+    <Content Include="QuartzCron\CalcRunTime.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

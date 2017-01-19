@@ -49,7 +49,12 @@
     <div class="form-group">
         <label class="col-sm-3 control-label">Cron表达式：</label>
         <div class="col-sm-9">
-            <input type="text" placeholder="Cron表达式" value="@Model.CronExpressionString" id="cronExpressionString" name="cronExpressionString" class="form-control">
+            <div class="input-group">
+                <input type="text" placeholder="Cron表达式" value="@Model.CronExpressionString" id="cronExpressionString" name="cronExpressionString" class="form-control">
+                <a class="input-group-addon" href="@(Url.Content("~/"))QuartzCron/index.htm" target="_blank">
+                    CRON创建
+                </a>
+            </div>
         </div>
     </div>
     <div class="form-group">

@@ -10,7 +10,10 @@ namespace Monitor.Tasks.Server
     {
         static void Main(string[] args)
         {
-            
+            var a = 24/12;
+            Console.WriteLine(a);
+            Console.ReadKey();
+
         }
     }
 }

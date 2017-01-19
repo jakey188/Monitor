@@ -1,0 +1,251 @@
+﻿
+        <form class="form-horizontal" action="" id="crontab-form">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#cronSecond" role="tab" data-toggle="tab">秒</a></li>
+                <li role="presentation"><a href="#cronMinute" role="tab" data-toggle="tab">分</a></li>
+                <li role="presentation"><a href="#cronHour" role="tab" data-toggle="tab">小时</a></li>
+                <li role="presentation"><a href="#cronDay" role="tab" data-toggle="tab">日</a></li>
+                <li role="presentation"><a href="#cronMonth" role="tab" data-toggle="tab">月</a></li>
+                <li role="presentation"><a href="#cronWeek" role="tab" data-toggle="tab">周</a></li>
+                <li role="presentation"><a href="#cronYear" role="tab" data-toggle="tab">年</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="cronSecond">
+                    <div class="box">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="radio-inline">
+                                    <input type="radio" name="second_chooser" id="second_chooser_every" checked="checked" />每秒
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" class="pull-left" name="second_chooser" id="second_chooser_start">
+                                <span class="pull-left">从</span> 
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="0" id="secondStart_1">
+                                <span class="pull-left">秒开始,每</span> 
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="1" id="secondEnd_1">
+                                <span class="pull-left">秒执行一次</span> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input class="pull-left" type="radio" name="second_chooser" id="second_chooser_cycle"/>
+                                <span class="pull-left">周期从</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="1" id="secondStart_0">
+                                <span class="pull-left">-</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="2" id="secondEnd_0">
+                                <span class="pull-left">秒</span>
+                            </div>
+                            </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" name="second_chooser" id="second_chooser_choose" class="choose"/>
+                                指定
+                                    @for (var i = 0;i < 6;i++)
+                                    {
+                                        <div class="second_list" style="padding-left: 25px;">
+                                            @for (var j = 0; j < 10; j++)
+                                            {
+                                                if (i == 0)
+                                                {
+                                                    var value = "0" + j;
+                                                    <input type="checkbox" value="@j"/>@value
+                                                }
+                                                else
+                                                {
+                                                    var value = int.Parse(i + "0") + j;
+                                                    <input type="checkbox" value="@value">@(value)
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                    </div>
+                            </div>
+                        </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="cronMinute">
+                    <div class="box">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="radio-inline">
+                                    <input type="radio" name="minute_chooser" id="minute_chooser_every" checked="checked" />每分
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" class="pull-left" name="minute_chooser" id="minute_chooser_start">
+                                <span class="pull-left">从</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="0" id="minStart_1">
+                                <span class="pull-left">分开始,每</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="1" id="minEnd_1">
+                                <span class="pull-left">分执行一次</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input class="pull-left" type="radio" name="minute_chooser" id="minute_chooser_cycle" />
+                                <span class="pull-left">周期从</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="1" id="minStart_0">
+                                <span class="pull-left">-</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="2" id="minEnd_0">
+                                <span class="pull-left">分</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" name="minute_chooser" id="minute_chooser_choose" class="choose" />
+                                指定
+                                @for (var i = 0;i < 6;i++)
+                                {
+                                    <div class="minute_list" style="padding-left: 25px;">
+                                        @for (var j = 0;j < 10;j++)
+                                        {
+                                            if (i == 0)
+                                            {
+                                                var value = "0" + j;
+                                                <input type="checkbox" value="@j" />@value
+                                            }
+                                            else
+                                            {
+                                                var value = int.Parse(i + "0") + j;
+                                                <input type="checkbox" value="@value">@(value)
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="cronHour">
+                    <div class="box">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="radio-inline">
+                                    <input type="radio" name="hour_chooser" id="hour_chooser_every" checked="checked" />每小时
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" class="pull-left" name="hour_chooser" id="hour_chooser_start">
+                                <span class="pull-left">从</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="0" id="hourStart_1">
+                                <span class="pull-left">小时开始,每</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="1" id="hourEnd_1">
+                                <span class="pull-left">小时执行一次</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input class="pull-left" type="radio" name="hour_chooser" id="hour_chooser_cycle" />
+                                <span class="pull-left">周期从</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="1" id="hourStart_0">
+                                <span class="pull-left">-</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="2" id="hourEnd_0">
+                                <span class="pull-left">分</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" name="minute_chooser" id="minute_chooser_choose" class="choose" />
+                                指定
+                                @for (var i = 0;i < 24;i++)
+                                {
+                           
+                                        <div class="hour_list" style="padding-left: 25px;">
+                                            
+                                               
+                                                <input type="checkbox" value="">
+                                           
+                                        
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="cronDay">
+                    <div class="box">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="radio-inline">
+                                    <input type="radio" name="day_chooser" id="day_chooser_every" checked="checked" />每日
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" class="pull-left" name="day_chooser" id="day_chooser_start">
+                                <span class="pull-left">从</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="0" id="dayStart_1">
+                                <span class="pull-left">日开始,每</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="1" id="dayEnd_1">
+                                <span class="pull-left">日执行一次</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input class="pull-left" type="radio" name="day_chooser" id="day_chooser_cycle"/>
+                                <span class="pull-left">周期从</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="1" id="dayStart_0">
+                                <span class="pull-left">-</span>
+                                <input class="form-control pull-left input-sm" style="width: 60px;" value="2" id="dayEnd_0">
+                                <span class="pull-left">分</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" name="day_chooser" id="day_chooser_nochoose" class="nochoose"/>
+                                不指定
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="radio" name="day_chooser" id="day_chooser_choose" class="choose" />
+                                指定
+                                @for (var i = 0;i < 24;i++)
+                                {
+
+                                    <div class="day_list" style="padding-left: 25px;">
+
+
+                                        <input type="checkbox" value="">
+
+
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="cronMonth">cronMonth</div>
+                <div role="tabpanel" class="tab-pane" id="cronWeek">cronWeek</div>
+                <div role="tabpanel" class="tab-pane" id="cronYear">cronYear</div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" placeholder="Cron表达式结果" class="form-control">
+                    <span class="input-group-addon" name="generate" id="generate">
+                        生成
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                计划执行时间:<br />
+                <br />
+                <textarea name="command" id="command" rows="5" cols="50" class="form-control"></textarea>
+                <button  name="generate" class="btn btn-default" id="submit">
+                    获取未来执行时间
+                </button>
+            </div>
+        </form>

@@ -20,7 +20,7 @@ namespace Monitor.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             GlobalFilters.Filters.Add(new HandleErrorLogAttribute());
             //_scheduler.Start();
-            //QuartzManager.StartScheduler();
+            QuartzManager.StartScheduler();
         }
 
         protected void Application_End()

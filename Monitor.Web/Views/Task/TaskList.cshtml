@@ -60,7 +60,7 @@
                                 data: $('#createTaskForm').serialize(),
                                 success: function (response) {
                                     if (response.s == 10006) {
-                                        app.tips('操作成功', function () {
+                                        app.tips(response.msg, function () {
                                             userInfoDialog.close();
                                             vue.getList();
                                         });
@@ -294,8 +294,8 @@
                         <td>
                             <button type="button" v-on:click="del(item.taskId)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>删除</button>
                             <button type="button" v-on:click="edit(item.taskId)" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-pencil"></span>编辑</button>
-                            <button type="button" v-on:click="updateStatus(item.taskId,1)" class="btn btn-success  btn-xs"><span class="glyphicon glyphicon-circle"></span>开始</button>
-                            <button type="button" v-on:click="updateStatus(item.taskId,0)" class="btn btn-default  btn-xs"><span class="glyphicon glyphicon-off"></span>停止</button>
+                            <button type="button" v-on:click="updateStatus(item.taskId,1)" v-if="item.status==0" class="btn btn-success  btn-xs"><span class="glyphicon glyphicon-circle"></span>开始</button>
+                            <button type="button" v-on:click="updateStatus(item.taskId,0)" v-if="item.status==1" class="btn btn-default  btn-xs"><span class="glyphicon glyphicon-off"></span>停止</button>
                         </td>
                     </tr>
                 </tbody>

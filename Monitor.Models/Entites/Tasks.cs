@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Monitor.Models.Entites
 {
@@ -64,21 +65,25 @@ namespace Monitor.Models.Entites
         /// <summary>
         /// 任务创建时间
         /// </summary>
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? CreatedTime { get; set; }
 
         /// <summary>
         /// 任务修改时间
         /// </summary>
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? ModifyTime { get; set; }
 
         /// <summary>
         /// 任务最近运行时间
         /// </summary>
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? RecentRunTime { get; set; }
 
         /// <summary>
         /// 任务下次运行时间
         /// </summary>
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? NextFireTime { get; set; }
 
         /// <summary>
