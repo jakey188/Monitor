@@ -25,26 +25,20 @@ namespace Monitor.Tasks.Quartzs
         /// <returns></returns>
         public OperationResult AddOrEditTask(Models.Entites.Tasks model, string action = "")
         {
-            var result = new OperationResult(OperationResultType.Success);
+            OperationResult result;
 
-            if (model.Status != (int) EnmTaskStatus.Run) return result;
-
-            var jobResult = QuartzManager.ScheduleJob(model, true);
-
-            if (jobResult.ResultType != OperationResultType.Success)
-            {
-                result.Message = jobResult.Message;
-                return result;
-            }
             if (action == "edit")
             {
-                _taskServices.Update(model);
+                result = QuartzManager.ScheduleJob(model, true);
+                if (result.ResultType == OperationResultType.Success)
+                    _taskServices.Update(model);
             }
             else
             {
-                _taskServices.AddTask(model);
+                result = QuartzManager.ScheduleJob(model);
+                if (result.ResultType == OperationResultType.Success)
+                    _taskServices.AddTask(model);
             }
-
             return result;
         }
 
@@ -98,18 +92,9 @@ namespace Monitor.Tasks.Quartzs
         /// 从数据库中读取全部任务列表
         /// </summary>
         /// <returns></returns>
-        private IList<Monitor.Models.Entites.Tasks> GetAllTaskList()
+        public IList<Monitor.Models.Entites.Tasks> GetAllTaskList()
         {
             return _taskServices.GetTaskList();
-        }
-
-        /// <summary>
-        /// 获取所有启用的任务
-        /// </summary>
-        /// <returns>所有启用的任务</returns>
-        public IList<Monitor.Models.Entites.Tasks> GetTaskRunList()
-        {
-            return _taskServices.GetAllTaskRunList();
         }
 
         /// <summary>

@@ -180,6 +180,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\ClusterController.cs" />
+    <Compile Include="Controllers\EarlywarnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HttpWatchController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -193,10 +194,6 @@
     <Compile Include="Core\Filter\AuthRoleAttribute.cs" />
     <Compile Include="Core\Filter\HandleErrorLogAttribute.cs" />
     <Compile Include="Core\Filter\LoginAuthorizeAttribute.cs" />
-    <Compile Include="Core\JobScheduler.cs" />
-    <Compile Include="Core\Jobs\EnmJob.cs" />
-    <Compile Include="Core\Jobs\PerformanceCounterJob.cs" />
-    <Compile Include="Core\Jobs\TestJob.cs" />
     <Compile Include="Core\JsonNetResult.cs" />
     <Compile Include="Core\Response\AjaxResponse.cs" />
     <Compile Include="Core\Response\CodeStruct.cs" />
@@ -233,6 +230,7 @@
     <Content Include="Views\Task\_TaskDetails.cshtml" />
     <Content Include="Views\Task\_CronExpressionBuilder.cshtml" />
     <Content Include="QuartzCron\CalcRunTime.ashx" />
+    <Content Include="Views\Task\TaskLogs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -247,6 +245,7 @@
     <Folder Include="Statics\aliyun\img\" />
     <Folder Include="Statics\aliyun\js\" />
     <Folder Include="Statics\css\dialog\" />
+    <Folder Include="Views\Earlywarn\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Monitor.Core\Monitor.Core.csproj">

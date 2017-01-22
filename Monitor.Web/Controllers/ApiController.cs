@@ -16,7 +16,6 @@ namespace Monitor.Web.Controllers
             var task = new Monitor.Models.Entites.Tasks();
             task.TaskId = Guid.NewGuid();
             task.Status = 1;
-            task.IsDelete = 1;
             task.CronExpressionString = "0/60 * * * * ?";
             new TaskServices().AddTask(task);
             return Json(1);

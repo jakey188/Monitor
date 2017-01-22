@@ -90,12 +90,6 @@ namespace Monitor.Models.Entites
         /// 任务备注
         /// </summary>
         public string Remark { get; set; }
-
-        /// <summary>
-        /// 是否删除
-        /// <see cref="EnmTaskDelete"/>
-        /// </summary>
-        public int IsDelete { get; set; }
     }
 
     /// <summary>
@@ -128,17 +122,5 @@ namespace Monitor.Models.Entites
         /// 外部任务
         /// </summary>
         Outside = 0
-    }
-
-    public enum EnmTaskDelete
-    {
-        /// <summary>
-        /// 未删除
-        /// </summary>
-        UnDelete = 1,
-        /// <summary>
-        /// 已删除
-        /// </summary>
-        OnDelete = 0
     }
 }

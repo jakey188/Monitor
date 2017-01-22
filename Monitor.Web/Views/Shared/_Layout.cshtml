@@ -229,15 +229,31 @@
                 </div>
                 <div class="sBox">
                     <div class="subNav sublist-down"><span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">任务调度</span></div>
-                    <ul class="navContent" style="display:block">
+                    <ul class="navContent" style="display: block">
                         <li class="@(LeftNemu("TaskList", "Task") ? "active" : "")">
                             <div class="showtitle" style="width: 100px;"><img src="~/Statics/img/leftimg.png"/>任务管理
                             </div>
-                            <a href="@Url.Action("TaskList", "Task")"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">任务管理</span></a>
+                            <a href="@Url.Action("TaskList", "Task")"><span class="sublist-icon glyphicon glyphicon-tasks"></span><span class="sub-title">任务管理</span></a>
                         </li>
-                        <li class="@(LeftNemu("Log","Task") ? "active" : "")">
-                            <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />任务日志</div>
-                            <a href="@Url.Action("Log","Task")"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">任务日志</span></a>
+                        <li class="@(LeftNemu("TaskLogs", "Task") ? "active" : "")">
+                            <div class="showtitle" style="width: 100px;"><img src="~/Statics/img/leftimg.png"/>任务日志
+                            </div>
+                            <a href="@Url.Action("TaskLogs", "Task")"><span class="sublist-icon glyphicon glyphicon-bullhorn"></span><span class="sub-title">任务日志</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sBox">
+                    <div class="subNav sublist-down"><span class="title-icon glyphicon glyphicon-chevron-down"></span><span class="sublist-title">预警</span></div>
+                    <ul class="navContent" style="display:block">
+                        <li class="@(LeftNemu("Set", "Earlywarn") ? "active" : "")">
+                            <div class="showtitle" style="width: 100px;">
+                                <img src="~/Statics/img/leftimg.png" />设置
+                            </div>
+                            <a href="@Url.Action("Set", "Earlywarn")"><span class="sublist-icon glyphicon glyphicon-tasks"></span><span class="sub-title">设置</span></a>
+                        </li>
+                        <li class="@(LeftNemu("Logs","Earlywarn") ? "active" : "")">
+                            <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />预警日志</div>
+                            <a href="@Url.Action("Logs","Earlywarn")"><span class="sublist-icon glyphicon glyphicon-bullhorn"></span><span class="sub-title">预警日志</span></a>
                         </li>
                     </ul>
                 </div>
@@ -246,7 +262,7 @@
                     <ul class="navContent" style="display:block">
                         <li class="@(LeftNemu("Index","Logs") ? "active" : "")">
                             <div class="showtitle" style="width:100px;"><img src="~/Statics/img/leftimg.png" />系统日志</div>
-                            <a href="@Url.Action("Index","Logs")"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">系统日志</span></a>
+                            <a href="@Url.Action("Index","Logs")"><span class="sublist-icon glyphicon glyphicon-sort-by-alphabet"></span><span class="sub-title">系统日志</span></a>
                         </li>
                     </ul>
                 </div>

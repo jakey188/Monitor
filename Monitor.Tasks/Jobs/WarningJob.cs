@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
+using Monitor.Tasks.Jobs;
 using Quartz;
 
-namespace Monitor.Web.Core.Jobs
+namespace Monitor.Tasks.Jobs
 {
-    public class TestJob:IJob
+    public class WarningJob:JobBase, IJob
     {
         public void Execute(IJobExecutionContext context)
         {
-            string jobKey = context.Trigger.Key.Name;
-            Debug.WriteLine("执行1"+ jobKey);
+            ExecuteJob(context,() =>
+            {
+            });
         }
     }
 }

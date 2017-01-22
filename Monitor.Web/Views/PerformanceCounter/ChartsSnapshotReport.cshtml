@@ -4,10 +4,15 @@
     ViewBag.Title = " 性能监视器统计图快照报表";
     var computerList = ViewBag.ComputerInfoList as List<ClusterComputerInfo>;
     var defaultComputer = computerList.FirstOrDefault();
+    var date = DateTime.Now;
+
+    var dayStartDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0).ToString("yyyy-MM-dd HH:mm:ss");
+    var dayEndDate = new DateTime(date.Year,date.Month,date.Day,23,59,59).ToString("yyyy-MM-dd HH:mm:ss");
 }
 
 @section scriptSrc{
     <script src="http://cdn.bootcss.com/echarts/3.3.2/echarts.common.js"></script>
+<script src="~/Statics/js/My97DatePicker/WdatePicker.js"></script>
 }
 @section script{
     <script>
@@ -22,7 +27,8 @@
                 el: '#app',
                 data: {
                     machineIp: '@(defaultComputer!=null ? defaultComputer.MachineIp : string.Empty)',
-                    type:1,
+                    startDate: '@dayStartDate',
+                    endDate:'@dayEndDate',
                     apiGetChartDataUrl: '@Url.Action("GetSnapshotChartsReport","PerformanceCounter")',
                     dataList: []
                 },
@@ -170,7 +176,7 @@
                     },
                     getChartData: function () {
                         var vm = this;
-                        $.get(vm.apiGetChartDataUrl, { ip: vm.machineIp,type:vm.type}, function (response) {
+                        $.get(vm.apiGetChartDataUrl, { ip: vm.machineIp, startDate: vm.startDate, endDate: vm.endDate }, function (response) {
                             var x = [];
                             var cpu = [], iis = [], memory = [];
 
@@ -234,12 +240,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <span class="pull-left form-span">请选择监控日期:</span>
-                    <select class="pull-left form-control" v-model="type">
-                        <option value="">-请选择日期-</option>
-                        <option value="1" selected="selected">当天</option>
-                        <option value="2">本月</option>
-                    </select>
+                    <span class="pull-left form-span">请选择日期:</span>
+                    <input class="pull-left form-control input-medium" style="width:180px;" v-model="startDate" value="@dayStartDate" placeholder="开始日期" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control input-medium" style="width:180px;" v-model="endDate" placeholder="结束日期" value="@dayEndDate" type="text" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" />
                 </div>
                 <div class="form-group btn-search">
                     <button class="btn btn-primary" v-on:click="clickSearchCharts()"><span class="glyphicon glyphicon-search"></span> 搜索</button>

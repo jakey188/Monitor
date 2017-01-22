@@ -66,6 +66,7 @@
     <Compile Include="ClusterPerformanceCounterSnapshotService.cs" />
     <Compile Include="Dtos\ClusterHttpWatchTotalDto.cs" />
     <Compile Include="Dtos\PerformanceCounterSnapshotDto.cs" />
+    <Compile Include="TaskLogsService.cs" />
     <Compile Include="LogsServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskServices.cs" />

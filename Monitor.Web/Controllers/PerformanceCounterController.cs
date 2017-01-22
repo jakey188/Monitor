@@ -112,14 +112,13 @@ namespace Monitor.Web.Controllers
         /// 获取性能监视器快照数据
         /// </summary>
         /// <param name="ip">服务器IP</param>
-        /// <param name="type">监视类型</param>
-        /// <param name="pageIndex">当前页码</param>
-        /// <param name="pageSize">每页大小</param>
+        /// <param name="startDate">开始时间</param>
+        /// <param name="endDate">结束时间</param>
         /// <returns>返回列表数据</returns>
         [Route("api/performance/snapshot/charts/report")]
-        public JsonResult GetSnapshotChartsReport(string ip,int type=1)
+        public JsonResult GetSnapshotChartsReport(string ip,string startDate,string endDate)
         {
-            var list = _clusterPerformanceCounterSnapshotService.ClusterPerformanceCounterSnapshotReport(ip,type);
+            var list = _clusterPerformanceCounterSnapshotService.ClusterPerformanceCounterSnapshotReport(ip,DateTime.Parse(startDate),DateTime.Parse(endDate));
             var data = list.Select(x => new
             {
                 date = x.Date,

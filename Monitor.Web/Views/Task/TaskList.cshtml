@@ -248,6 +248,9 @@
                             任务状态
                         </th>
                         <th>
+                            任务类别
+                        </th>
+                        <th>
                             最近运行时间
                         </th>
                         <th>
@@ -255,9 +258,6 @@
                         </th>
                         <th>
                             创建时间
-                        </th>
-                        <th>
-                            说明
                         </th>
                         <th>
                             操作
@@ -279,6 +279,9 @@
                             {{item.status == 1 ? "运行中" : "已停止"}}
                         </td>
                         <td>
+                            {{item.types == 1 ? "系统任务" : "外部任务"}}
+                        </td>
+                        <td>
                             {{item.recentRunTime}}
                         </td>
                         <td>
@@ -287,10 +290,6 @@
                         <td>
                             {{item.createdTime}}
                         </td>
-                        <td>
-                            {{item.remark}}
-                        </td>
-                        
                         <td>
                             <button type="button" v-on:click="del(item.taskId)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>删除</button>
                             <button type="button" v-on:click="edit(item.taskId)" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-pencil"></span>编辑</button>

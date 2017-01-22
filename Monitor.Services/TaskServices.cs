@@ -22,6 +22,16 @@ namespace Monitor.Services
         }
 
         /// <summary>
+        /// 批量添加计划任务
+        /// </summary>
+        /// <param name="tasks"></param>
+        public void AddTask(List<Tasks> tasks)
+        {
+            var db = new MongoDbContext();
+            db.AddRange(tasks);
+        }
+
+        /// <summary>
         /// 修改计划任务
         /// </summary>
         /// <param name="task"></param>
@@ -34,7 +44,7 @@ namespace Monitor.Services
         /// <summary>
         /// 删除指定id任务
         /// </summary>
-        /// <param name="TaskID">任务id</param>
+        /// <param name="taskId">任务id</param>
         public void Delete(string taskId)
         {
             var db = new MongoDbContext();
@@ -45,8 +55,8 @@ namespace Monitor.Services
         /// <summary>
         /// 更新任务运行状态
         /// </summary>
-        /// <param name="TaskID">任务id</param>
-        /// <param name="Status">任务状态</param>
+        /// <param name="taskId">任务id</param>
+        /// <param name="enmTaskStatus">任务状态</param>
         public void UpdateTaskStatus(string taskId,EnmTaskStatus enmTaskStatus)
         {
             var db = new MongoDbContext();
@@ -58,8 +68,8 @@ namespace Monitor.Services
         /// <summary>
         /// 更新任务下次运行时间
         /// </summary>
-        /// <param name="TaskID">任务id</param>
-        /// <param name="NextFireTime">下次运行时间</param>
+        /// <param name="taskId">任务id</param>
+        /// <param name="nextFireTime">下次运行时间</param>
         public void UpdateNextFireTime(string taskId,DateTime nextFireTime)
         {
             var db = new MongoDbContext();
@@ -86,15 +96,10 @@ namespace Monitor.Services
             return db.Where<Tasks>(x => x.TaskId == guid).FirstOrDefault();
         }
 
-        /// <summary>
-        /// 获取所有启用的任务
-        /// </summary>
-        /// <returns>所有启用的任务</returns>
-        public IList<Tasks> GetAllTaskRunList()
+        public Tasks GetTaskDetail(Guid taskId)
         {
             var db = new MongoDbContext();
-            var status = (int)EnmTaskStatus.Run;
-            return db.Where<Tasks>(x => x.Status == status).ToList();
+            return db.Where<Tasks>(x => x.TaskId == taskId).FirstOrDefault();
         }
 
         /// <summary>
@@ -105,6 +110,12 @@ namespace Monitor.Services
         {
             var db = new MongoDbContext();
             return db.Where<Tasks>().ToList();
+        }
+
+        public IList<Tasks> GetTaskList(List<Guid> taskIdList)
+        {
+            var db = new MongoDbContext();
+            return db.Where<Tasks>(x => taskIdList.Contains(x.TaskId)).ToList();
         }
 
         /// <summary>

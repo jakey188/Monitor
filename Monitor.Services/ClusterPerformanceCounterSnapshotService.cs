@@ -116,20 +116,17 @@ namespace Monitor.Services
         /// 性能监视器统计
         /// </summary>
         /// <param name="ip">IP</param>
-        /// <param name="dateType">1当天,2当月</param>
         /// <returns></returns>
-        public List<PerformanceCounterSnapshotDto> ClusterPerformanceCounterSnapshotReport(string ip,int dateType)
+        public List<PerformanceCounterSnapshotDto> ClusterPerformanceCounterSnapshotReport(string ip,DateTime start,DateTime end)
         {
             var db = new MongoDbContext();
-            var query = db.Where<ClusterPerformanceCounterSnapshot>(x => x.MachineIP == ip);
+            
 
-            var collection = db.GetCollection<ClusterPerformanceCounterSnapshot>();
-            var date = DateTime.Now;
+            var d = end - start;
 
-            if (dateType == 1)//按天
+            if (d.Days==0 && d.Hours<24)//按天
             {
-                var start = new DateTime(date.Year,date.Month,date.Day,0,0,0);
-                var end = new DateTime(date.Year,date.Month,date.Day,23,59,59);
+                var query = db.Where<ClusterPerformanceCounterSnapshot>(x => x.MachineIP == ip);
                 query = query.Where(x => x.CreateTime < end && x.CreateTime > start);
                 var q1 = query.GroupBy(x => x.CreateTime.Hour).Select(x => new PerformanceCounterSnapshotDto
                 {
@@ -142,21 +139,17 @@ namespace Monitor.Services
             }
             else
             {
-                var start = new DateTime(date.Year,date.Month,1,0,0,0);
-
-                var end = new DateTime(date.Year,date.Month,start.AddMonths(1).AddDays(-1).Day,23,59,59);
-
+                var query = db.Where<ClusterPerformanceCounterSnapshotDayHistoryTotal>(x => x.MachineIP == ip);
                 query = query.Where(x => x.CreateTime < end && x.CreateTime > start);
 
                 var q1 = query.GroupBy(x => x.CreateTime.Day).Select(x => new PerformanceCounterSnapshotDto
                 {
                     Date = x.Key,
-                    IIS = x.Average(m => m.IIS),
-                    CPU = x.Average(m => m.CPU),
-                    Memory = x.Average(m => m.Memory),
+                    IIS = x.Average(m => m.IISAvg),
+                    CPU = x.Average(m => m.CPUAvg),
+                    Memory = x.Average(m => m.MemoryAvg),
                 });
 
-                var sql = q1.ToString();
                 return q1.ToList();
             }
         }

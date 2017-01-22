@@ -13,23 +13,37 @@ namespace Monitor.Web.Controllers
     public class TaskController:BaseController
     {
         private readonly TaskServices _taskSerivice;
+        private readonly TaskLogsService _taskLogsService;
 
         public TaskController()
         {
             _taskSerivice = new TaskServices();
+            _taskLogsService = new TaskLogsService();
         }
 
-        // GET: Task
+        /// <summary>
+        /// 任务管理视图
+        /// </summary>
+        /// <returns></returns>
         public ActionResult TaskList()
         {
             return View();
         }
 
-        public ActionResult ExpressionBuilder()
+        /// <summary>
+        /// 任务日志视图
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TaskLogs()
         {
-            return PartialView("_CronExpressionBuilder");
+            return View();
         }
 
+        /// <summary>
+        /// 任务添加局部视图
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
         public ActionResult TaskDetails(string taskId)
         {
             var task = new Models.Entites.Tasks();
@@ -50,6 +64,25 @@ namespace Monitor.Web.Controllers
         {
             int total;
             var data = _taskSerivice.GetTaskList(taskName,pageIndex,pageSize,out total);
+            return Success(data,pageIndex,pageSize,total);
+        }
+
+        /// <summary>
+        /// 获取任务日志
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [Route("~/api/tasklog/list")]
+        public JsonResult GetTaskLogList(string taskId, string startDate,string endDate,int pageIndex = 1,int pageSize = 10)
+        {
+            int total;
+            DateTime? start = string.IsNullOrEmpty(startDate) ? null : (DateTime?)DateTime.Parse(startDate);
+            DateTime? end = string.IsNullOrEmpty(endDate) ? null : (DateTime?)DateTime.Parse(endDate);
+            var data = _taskLogsService.GetTaskLogList(start,end, taskId,pageIndex,pageSize,out total);
             return Success(data,pageIndex,pageSize,total);
         }
 
